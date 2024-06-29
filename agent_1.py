@@ -9,15 +9,20 @@ _ = load_dotenv()
 
 # installed langgraph, openai,
 # installed langchain_openai from the terminal could not find it in the file settings list
+# pip install langchain_openai
 # alse installed pip install pygraphviz
+# pip install langgraph
 from langgraph.graph import StateGraph, END
 from typing import TypedDict, Annotated
 import operator
 from langchain_core.messages import AnyMessage, SystemMessage, HumanMessage, ToolMessage
 from langchain_openai import ChatOpenAI
+#  python.exe -m pip install --upgrade pip
+# pip install --upgrade langchain-community
 from langchain_community.tools.tavily_search import TavilySearchResults
 import os
 from langchain.agents import tool
+# pip install ipython
 from IPython.display import Image
 
 # tool = TavilySearchResults(max_results=4) #increased number of results
