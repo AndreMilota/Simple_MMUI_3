@@ -98,7 +98,7 @@ class Window:
     # more ASR stuff ------------------------------
 
     def callback(self, input_data, frame_count, time_info, status_flags):
-        if running:
+        if self.running:
             self.audio_queue.put_nowait(input_data)
         return (input_data, pyaudio.paContinue)
 
@@ -116,7 +116,7 @@ class Window:
         stream.start_stream()
 
         try:
-            while running:
+            while self.running:
                 await asyncio.sleep(0.1)
         finally:
             stream.stop_stream()
@@ -132,9 +132,9 @@ class Window:
                                       extra_headers=extra_headers) as ws:
             async def sender(ws):
                 try:
-                    while running:
+                    while self.running:
                         data = await self.audio_queue.get()
-                        if asr_enabled:  # Check ASR enabled before sending
+                        if self.asr_enabled:  # Check ASR enabled before sending
                             await ws.send(data)
                 except asyncio.CancelledError:
                     pass
@@ -144,7 +144,7 @@ class Window:
             async def receiver(ws):
                 try:
                     async for msg in ws:
-                        if not running:
+                        if not self.running:
                             break
 
                         msg = json.loads(msg)
@@ -171,8 +171,7 @@ class Window:
 
     def on_closing(self):
         print("on_closing")
-        global running
-        running = False
+        self.running = False
         self.root.destroy()
         if self.loop:
             for task in asyncio.all_tasks(self.loop):
@@ -182,13 +181,11 @@ class Window:
             print("just called loop.call_soon_threadsafe(loop.stop)")
 
     def on_f4_press(self, event):
-        global asr_enabled
-        asr_enabled = True
+        self.asr_enabled = True
         # print("F4 key pressed down")
 
     def on_f4_release(self, event):
-        global asr_enabled
-        asr_enabled = False
+        self.asr_enabled = False
         # print("F4 key released")
     def run(self):
         #TODO start the asr loops
@@ -197,8 +194,8 @@ class Window:
         self.root.bind("<KeyPress-F4>", self.on_f4_press)
         self.root.bind("<KeyRelease-F4>", self.on_f4_release)
 
-        loop = asyncio.new_event_loop()
-        thread = threading.Thread(target=self.start_async_loop, args=(loop,))
+        self.loop = asyncio.new_event_loop()
+        thread = threading.Thread(target=self.start_async_loop, args=(self.loop,))
         thread.start()
 
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
