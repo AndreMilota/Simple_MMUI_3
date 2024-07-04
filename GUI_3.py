@@ -31,11 +31,11 @@ class Window:
         button_frame.grid(row=2, column=0, columnspan=2, padx=10, pady=(0, 10), sticky="ew")
 
         # Create two new buttons
-        self.new_button1 = tk.Button(button_frame, text="New Button 1", command=self.new_button1_clicked)
-        self.new_button1.pack(side=tk.LEFT, padx=(0, 5))
+        self.undo_button = tk.Button(button_frame, text="Undo", command=self.on_undo)
+        self.undo_button.pack(side=tk.LEFT, padx=(0, 5))
 
-        self.new_button2 = tk.Button(button_frame, text="New Button 2", command=self.new_button2_clicked)
-        self.new_button2.pack(side=tk.LEFT, padx=(0, 5))
+        self.toggle_ASR_button = tk.Button(button_frame, text="Start Transcription", command=self.on_toggle_transcription)
+        self.toggle_ASR_button.pack(side=tk.LEFT, padx=(0, 5))
 
         # Create "Run" button
         self.run_button = tk.Button(button_frame, text="Run", command=self.run_callback)
@@ -52,11 +52,11 @@ class Window:
 
         print("the GUI is up and running")
 
-    def new_button1_clicked(self):
+    def on_undo(self):
         print("New Button 1 clicked")
         # Add your desired functionality here
 
-    def new_button2_clicked(self):
+    def on_toggle_transcription(self):
         print("New Button 2 clicked")
         # Add your desired functionality here
 
