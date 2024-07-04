@@ -35,7 +35,7 @@ class Window:
         self.undo_button = tk.Button(button_frame, text="Undo", command=self.on_undo)
         self.undo_button.pack(side=tk.LEFT, padx=(0, 5))
 
-        self.toggle_ASR_button = tk.Button(button_frame, text="Start Transcription", command=self.on_toggle_transcription)
+        self.toggle_ASR_button = tk.Button(button_frame, text="Start Transcription", command=self.toggle_transcription)
         self.toggle_ASR_button.pack(side=tk.LEFT, padx=(0, 5))
 
         # Create "Run" button
@@ -51,15 +51,80 @@ class Window:
 
         self.todo = []
 
+        # Bind F4 key events
+        self.root.bind('<KeyPress-F4>', self.on_f4_press)
+        self.root.bind('<KeyRelease-F4>', self.on_f4_release)
+        self.root.bind('<KeyPress-F1>', self.on_f1_press)
+        self.root.bind('<KeyPress-F5>', self.on_f5_press)
+
+        # Initialize the transcriber
+        self.transcriber = DeepgramTranscriber()
+        self.transcriber.set_on_result(self.update_text)
+        self.is_transcribing = False
+
+        self.Command_Buffer = Command_Buffer()
+
         print("the GUI is up and running")
 
-    def on_undo(self):
-        print("New Button 1 clicked")
-        # Add your desired functionality here
+    def on_f4_press(self, event):
+        print("F4 pressed")
+        if not self.is_transcribing:
+            self.toggle_transcription()
 
-    def on_toggle_transcription(self):
-        print("New Button 2 clicked")
-        # Add your desired functionality here
+    def on_f4_release(self, event):
+        print("F4 released")
+        if self.is_transcribing:
+            self.toggle_transcription()
+        # self.transcriber.pause()
+        # self.toggle_button.config(text="Start Transcription")
+
+    def on_f1_press(self, event):
+        print("F1 pressed")
+        # pop a command off the command buffer
+        self.Command_Buffer.undo()
+        # display the text
+        pending_command = self.Command_Buffer.get_command()
+        # replace the text in the text box with the pending command
+        self.command_entry.delete('1.0', tk.END)
+        self.command_entry.insert(tk.END, pending_command)
+
+    def on_f5_press(self, event):
+        print("F5 pressed")
+        pending_command = self.Command_Buffer.get_command()
+        # TODO insert run action here
+        self.Command_Buffer.clear_buffer()
+        self.text_area.delete('1.0', tk.END)
+
+    # process typing in the text box
+
+
+    def update_text(self, text):
+        # add the text to the command
+        self.Command_Buffer.add_command(text)
+        # display the text
+        pending_command = self.Command_Buffer.get_command()
+        # replace the text in the text box with the pending command
+        self.command_entry.delete('1.0', tk.END)
+        self.command_entry.insert(tk.END, pending_command)
+        # self.text_area.insert(tk.END, text + "\n")
+        # self.text_area.see(tk.END)  # Scroll to the end
+    def on_undo(self):
+        # pop a command off the command buffer
+        self.Command_Buffer.undo()
+        # display the text
+        pending_command = self.Command_Buffer.get_command()
+        # replace the text in the text box with the pending command
+        self.command_entry.delete('1.0', tk.END)
+        self.command_entry.insert(tk.END, pending_command)
+    def toggle_transcription(self):
+        if self.is_transcribing:
+            self.transcriber.pause()
+            self.toggle_ASR_button.config(text="Start Transcription")
+            self.is_transcribing = False
+        else:
+            self.transcriber.unpause()
+            self.toggle_ASR_button.config(text="Stop Transcription")
+            self.is_transcribing = True
 
     # widget callbacks ------------------------------
     def run_callback(self):
@@ -89,7 +154,6 @@ class Window:
             self.todo.append(lambda : self.button1.config(background=color))
         elif button_index == 2:
             self.todo.append(lambda : self.button2.config(background=color))
-
 
     def set_run_callback(self, run_callback_function):
         self.run_callback_function = run_callback_function
