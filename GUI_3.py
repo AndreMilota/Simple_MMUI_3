@@ -1,7 +1,8 @@
 #GUI.py
-
+from tkinter import scrolledtext
 import tkinter as tk
-
+from deepgram_ASR import DeepgramTranscriber  # Assume this is your transcriber file
+from command_buffer import Command_Buffer
 
 class Window:
     def __init__(self, title):
@@ -11,11 +12,11 @@ class Window:
         self.root.title(title)
 
         # Create command entry box
-        self.command_entry = tk.Text(self.root, width=50, height=4)
+        self.command_entry = scrolledtext.ScrolledText(self.root, width=50, height=4)
         self.command_entry.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
 
         # Put the dialog box under it
-        self.dialog_box = tk.Text(self.root, width=50, height=20)
+        self.dialog_box = scrolledtext.ScrolledText(self.root, width=50, height=20)
         self.dialog_box.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
 
         # Create Button 1
