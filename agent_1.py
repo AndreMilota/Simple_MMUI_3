@@ -1,6 +1,6 @@
 #agent_1.py
 # uses open AI
-import GUI_with_ASR as GUI
+import GUI_3 as GUI
 
 # inports
 # had to install "python-dotenv" to get this to work. I could not get dotenv to work it gave me an error
