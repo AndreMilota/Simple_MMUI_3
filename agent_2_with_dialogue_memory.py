@@ -16,7 +16,18 @@ from langgraph.graph import StateGraph, END
 from typing import TypedDict, Annotated
 import operator
 from langchain_core.messages import AnyMessage, SystemMessage, HumanMessage, ToolMessage
+
 from langchain_openai import ChatOpenAI
+from langchain_core.prompts import (
+    ChatPromptTemplate,
+    MessagesPlaceholder,
+    SystemMessagePromptTemplate,
+    HumanMessagePromptTemplate,
+)
+from langchain.chains import LLMChain
+from langchain.memory import ConversationBufferMemory
+
+
 #  python.exe -m pip install --upgrade pip
 # pip install --upgrade langchain-community
 from langchain_community.tools.tavily_search import TavilySearchResults
@@ -36,6 +47,8 @@ class Agent:
 
     def __init__(self, model, tools, system=""):
         self.system = system # system message
+        self.memory = ConversationBufferMemory(return_messages=True)
+
         graph = StateGraph(AgentState)
         graph.add_node("llm", self.call_openai)
         graph.add_node("action", self.take_action)
@@ -58,8 +71,23 @@ class Agent:
         messages = state['messages']
         if self.system:
             messages = [SystemMessage(content=self.system)] + messages
+
+        # Add memory to the messages
+        memory_messages = self.memory.load_memory_variables({})["history"]
+        messages = memory_messages + messages
+
         message = self.model.invoke(messages)
+
+        # Save the interaction to memory
+        self.memory.save_context({"input": messages[-1].content}, {"output": message.content})
+
         return {'messages': [message]}
+    # def call_openai(self, state: AgentState):
+    #     messages = state['messages']
+    #     if self.system:
+    #         messages = [SystemMessage(content=self.system)] + messages
+    #     message = self.model.invoke(messages)
+    #     return {'messages': [message]}
 
     def take_action(self, state: AgentState):
         tool_calls = state['messages'][-1].tool_calls
@@ -75,48 +103,89 @@ class Agent:
         print("Back to the model!")
         return {'messages': results}
 
+# prompt_template = """You are a multimodal agent for controlling a simple app. \
+# You will be given the text of the commands the user issues. \
+# If the user also makes a gesture along with the command you will be given a description \
+# of any gestures the user made during the turn. The app lets users set the color of 2 buttons \
+# in the widget. \
+# Also you can answer random questions that done result in the changing of the button’s state.
+# [Verbal command]: {command}
+# [Gesture description]: {gestures}"""
+
 prompt_template = """You are a multimodal agent for controlling a simple app. \
 You will be given the text of the commands the user issues. \
 If the user also makes a gesture along with the command you will be given a description \
 of any gestures the user made during the turn. The app lets users set the color of 2 buttons \
 in the widget. \
-Also you can answer random questions that done result in the changing of the button’s state.
+Also you can answer random questions that don't result in the changing of the button's state.
+
+Previous conversation:
+{history}
+
 [Verbal command]: {command}
 [Gesture description]: {gestures}"""
 
-def main():
-    # create the window
-    gui = GUI.Window("agent_1 with ASR gui 3")
-    # create the prompt
 
-    # create a tool
+# def main():
+#     # create the window
+#     gui = GUI.Window("agent_1 with ASR gui 3")
+#     # create the prompt
+#
+#     # create a tool
+#     @tool
+#     def set_button_color(button_index: int, new_color: str) -> None:
+#         """Set the background color of a button. There are 2 buttons, 1 and 2"""
+#         print(f"Setting button {button_index} to {new_color}")
+#         #gui.todo = [button_index, new_color]
+#         gui.set_button_color(button_index, new_color)
+#
+#     # create an agent
+#     model = ChatOpenAI(model="gpt-3.5-turbo")
+#     abot = Agent(model, [set_button_color], system=prompt_template)
+#     # link the agent up
+#
+#     # this function gets called from the gui, it is given the command and the gestures
+#     def callback_function(command, gestures):
+#         # messages = [HumanMessage(content=command)]
+#         # input = {"messages": messages, "gestures": gestures}
+#         # result = abot.graph.invoke(messages)
+#         # Fill the prompt template with the command and gestures
+#         prompt = prompt_template.format(command=command, gestures=gestures)
+#         messages = [HumanMessage(content=prompt)]
+#         result = abot.graph.invoke({"messages": messages})
+#         print(result)
+#
+#     gui.set_run_callback(callback_function)
+#
+#     # run the agent
+#     gui.run()
+
+def main():
+    gui = GUI.Window("agent_1 with ASR gui 3")
+
     @tool
     def set_button_color(button_index: int, new_color: str) -> None:
         """Set the background color of a button. There are 2 buttons, 1 and 2"""
         print(f"Setting button {button_index} to {new_color}")
-        #gui.todo = [button_index, new_color]
         gui.set_button_color(button_index, new_color)
 
-    # create an agent
     model = ChatOpenAI(model="gpt-3.5-turbo")
     abot = Agent(model, [set_button_color], system=prompt_template)
-    # link the agent up
 
-    # this function gets called from the gui, it is given the command and the gestures
     def callback_function(command, gestures):
-        # messages = [HumanMessage(content=command)]
-        # input = {"messages": messages, "gestures": gestures}
-        # result = abot.graph.invoke(messages)
-        # Fill the prompt template with the command and gestures
-        prompt = prompt_template.format(command=command, gestures=gestures)
+        prompt = prompt_template.format(
+            history=abot.memory.load_memory_variables({})["history"],
+            command=command,
+            gestures=gestures
+        )
         messages = [HumanMessage(content=prompt)]
         result = abot.graph.invoke({"messages": messages})
         print(result)
 
     gui.set_run_callback(callback_function)
-
-    # run the agent
     gui.run()
+
+
 
 if __name__ == "__main__":
     main()

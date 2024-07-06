@@ -11,13 +11,11 @@ class Window:
         self.root = tk.Tk()
         self.root.title(title)
 
-        # Create command entry box
-        self.command_entry = scrolledtext.ScrolledText(self.root, width=50, height=4)
-        self.command_entry.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
-
-        # Put the dialog box under it
         self.dialog_box = scrolledtext.ScrolledText(self.root, width=50, height=20)
         self.dialog_box.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
+
+        self.command_entry = scrolledtext.ScrolledText(self.root, width=50, height=4)
+        self.command_entry.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
 
         # Create Button 1
         self.button1 = tk.Button(self.root, text="Button 1", command=self.button1_clicked)
