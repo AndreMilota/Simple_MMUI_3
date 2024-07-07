@@ -185,7 +185,5 @@ def main():
     gui.set_run_callback(callback_function)
     gui.run()
 
-
-
 if __name__ == "__main__":
     main()
