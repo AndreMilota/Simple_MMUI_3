@@ -3,9 +3,10 @@ from tkinter import scrolledtext
 import tkinter as tk
 from deepgram_ASR import DeepgramTranscriber  # Assume this is your transcriber file
 from command_buffer import Command_Buffer
-
-class Window:
-    def __init__(self, title):
+from back_end import Back_End
+class Window(Back_End):
+    def __init__(self, title, transcriber=None):
+        super().__init__()
         self.gestures = ""
 
         self.root = tk.Tk()
@@ -56,7 +57,10 @@ class Window:
         self.root.bind('<KeyPress-F5>', self.on_f5_press)
 
         # Initialize the transcriber
-        self.transcriber = DeepgramTranscriber()
+        if transcriber is None:
+            self.transcriber = DeepgramTranscriber()
+        else:
+            self.transcriber = transcriber # use the one it was given
         self.transcriber.set_on_result(self.update_text)
         self.is_transcribing = False
 
@@ -94,8 +98,6 @@ class Window:
         self.text_area.delete('1.0', tk.END)
 
     # process typing in the text box
-
-
     def update_text(self, text):
         # add the text to the command
         self.Command_Buffer.add_command(text)
@@ -145,9 +147,17 @@ class Window:
 
     # agent tolls calls ------------------------------
     def get_button_color(self, button_index):
-        return self.button1.cget("background")
+        memory_color = super.get_button_color(button_index)
+        if button_index == 1:
+            gui_color = self.button1.cget("background")
+        elif button_index == 2:
+            gui_color = self.button2.cget("background")
+        assert memory_color == gui_color
+        return memory_color
+
 
     def set_button_color(self, button_index, color):
+        super.set_button_color(button_index, color)
         if button_index == 1:
             self.todo.append(lambda : self.button1.config(background=color))
         elif button_index == 2:
@@ -161,7 +171,8 @@ class Window:
 
 def main():
     # create the window
-    gui = Window("GUI_3")
+    transcriber = DeepgramTranscriber()
+    gui = Window("GUI_3", transcriber=transcriber)
     gui.run()
 
 if __name__ == "__main__":

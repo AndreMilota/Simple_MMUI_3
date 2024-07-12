@@ -1,7 +1,13 @@
-# this is an offline test class for the simple GUI
-# it should have all the functions that the agents uses
-class Window():
+ # This class wraps the GUI application But provides mock functions that we can use to run this thing offline. Unlike
+ # GUI_stub it  inherits from the actual GUI and so if we add  elements to the  application  we  won't always have to
+ # re-implement them in this class. For instance we might want to add something to the GUI that tracks the history of
+ # all the buttons.
+
+import GUI_3 as GUI
+
+class Window(GUI.Window):
     def __init__(self, title):
+        super().__init__(title)
         self.button_colors = ['white', 'white', 'white']
         self.run_callback_function = None
 
@@ -20,6 +26,11 @@ class Window():
     def button2_clicked(self):
         self.gestures += "button 2 was indicated"
 
+    def click_button(self, button_index):
+        if button_index == 1:
+            self.button1_clicked()
+        elif button_index == 2:
+            self.button2_clicked()
     def take_action(self, command):
         self.run_callback_function(command, self.gestures)
         self.gestures = ""
@@ -28,3 +39,8 @@ class Window():
         for c in self.todo:
             c()
         self.todo = []  # clear the todo list
+
+def main():
+    # create the window
+    gui = Window("malkup")
+    gui.run()

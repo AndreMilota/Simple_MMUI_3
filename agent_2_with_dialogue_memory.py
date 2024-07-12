@@ -62,11 +62,9 @@ class Agent:
         self.graph = graph.compile()
         self.tools = {t.name: t for t in tools}
         self.model = model.bind_tools(tools)
-
     def exists_action(self, state: AgentState):
         result = state['messages'][-1]
         return len(result.tool_calls) > 0
-
     def call_openai(self, state: AgentState):
         messages = state['messages']
         if self.system:
@@ -88,7 +86,6 @@ class Agent:
     #         messages = [SystemMessage(content=self.system)] + messages
     #     message = self.model.invoke(messages)
     #     return {'messages': [message]}
-
     def take_action(self, state: AgentState):
         tool_calls = state['messages'][-1].tool_calls
         results = []
@@ -124,41 +121,6 @@ Previous conversation:
 
 [Verbal command]: {command}
 [Gesture description]: {gestures}"""
-
-
-# def main():
-#     # create the window
-#     gui = GUI.Window("agent_1 with ASR gui 3")
-#     # create the prompt
-#
-#     # create a tool
-#     @tool
-#     def set_button_color(button_index: int, new_color: str) -> None:
-#         """Set the background color of a button. There are 2 buttons, 1 and 2"""
-#         print(f"Setting button {button_index} to {new_color}")
-#         #gui.todo = [button_index, new_color]
-#         gui.set_button_color(button_index, new_color)
-#
-#     # create an agent
-#     model = ChatOpenAI(model="gpt-3.5-turbo")
-#     abot = Agent(model, [set_button_color], system=prompt_template)
-#     # link the agent up
-#
-#     # this function gets called from the gui, it is given the command and the gestures
-#     def callback_function(command, gestures):
-#         # messages = [HumanMessage(content=command)]
-#         # input = {"messages": messages, "gestures": gestures}
-#         # result = abot.graph.invoke(messages)
-#         # Fill the prompt template with the command and gestures
-#         prompt = prompt_template.format(command=command, gestures=gestures)
-#         messages = [HumanMessage(content=prompt)]
-#         result = abot.graph.invoke({"messages": messages})
-#         print(result)
-#
-#     gui.set_run_callback(callback_function)
-#
-#     # run the agent
-#     gui.run()
 
 def main():
     gui = GUI.Window("agent_1 with ASR gui 3")
