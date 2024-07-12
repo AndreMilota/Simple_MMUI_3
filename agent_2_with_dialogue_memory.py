@@ -100,14 +100,7 @@ class Agent:
         print("Back to the model!")
         return {'messages': results}
 
-# prompt_template = """You are a multimodal agent for controlling a simple app. \
-# You will be given the text of the commands the user issues. \
-# If the user also makes a gesture along with the command you will be given a description \
-# of any gestures the user made during the turn. The app lets users set the color of 2 buttons \
-# in the widget. \
-# Also you can answer random questions that done result in the changing of the button’s state.
-# [Verbal command]: {command}
-# [Gesture description]: {gestures}"""
+
 
 prompt_template = """You are a multimodal agent for controlling a simple app. \
 You will be given the text of the commands the user issues. \
@@ -122,16 +115,18 @@ Previous conversation:
 [Verbal command]: {command}
 [Gesture description]: {gestures}"""
 
-def main():
-    gui = GUI.Window("agent_1 with ASR gui 3")
 
+def run_MMUI(prompt_template=prompt_template, model=None, ASR_wrapper=None, gui=None, window_name="agent_1 with ASR gui 3"):
+    if model is None:
+        model = ChatOpenAI(model="gpt-3.5-turbo")
+    if gui is None:
+        gui = GUI.Window(window_name)
     @tool
     def set_button_color(button_index: int, new_color: str) -> None:
         """Set the background color of a button. There are 2 buttons, 1 and 2"""
         print(f"Setting button {button_index} to {new_color}")
         gui.set_button_color(button_index, new_color)
 
-    model = ChatOpenAI(model="gpt-3.5-turbo")
     abot = Agent(model, [set_button_color], system=prompt_template)
 
     def callback_function(command, gestures):
@@ -146,6 +141,9 @@ def main():
 
     gui.set_run_callback(callback_function)
     gui.run()
+
+def main():
+    run_MMUI()
 
 if __name__ == "__main__":
     main()

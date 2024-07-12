@@ -67,19 +67,16 @@ class Window(Back_End):
         self.Command_Buffer = Command_Buffer()
 
         print("the GUI is up and running")
-
     def on_f4_press(self, event):
-        print("F4 pressed")
         if not self.is_transcribing:
+            print("F4 pressed")
             self.toggle_transcription()
-
     def on_f4_release(self, event):
         print("F4 released")
         if self.is_transcribing:
             self.toggle_transcription()
         # self.transcriber.pause()
         # self.toggle_button.config(text="Start Transcription")
-
     def on_f1_press(self, event):
         print("F1 pressed")
         # pop a command off the command buffer
@@ -89,14 +86,12 @@ class Window(Back_End):
         # replace the text in the text box with the pending command
         self.command_entry.delete('1.0', tk.END)
         self.command_entry.insert(tk.END, pending_command)
-
     def on_f5_press(self, event):
         print("F5 pressed")
         pending_command = self.Command_Buffer.get_command()
         # TODO insert run action here
         self.Command_Buffer.clear_buffer()
         self.text_area.delete('1.0', tk.END)
-
     # process typing in the text box
     def update_text(self, text):
         # add the text to the command
@@ -125,10 +120,10 @@ class Window(Back_End):
             self.transcriber.unpause()
             self.toggle_ASR_button.config(text="Stop Transcription")
             self.is_transcribing = True
-
     # widget callbacks ------------------------------
     def run_callback(self):
         command = self.command_entry.get("1.0", "end-1c")
+        print(f"Running command: {command}")
         self.run_callback_function(command, self.gestures)
         self.gestures = ""
         #if self.todo != None:
@@ -136,39 +131,32 @@ class Window(Back_End):
         for command in self.todo:
             command()
         self.todo = [] # clear the todo list
-
     def button1_clicked(self):
         self.gestures += "button 1 was indicated"
         print("Button 1 clicked")
-
     def button2_clicked(self):
         self.gestures += "button 2 was indicated"
         print("Button 2 clicked")
-
     # agent tolls calls ------------------------------
     def get_button_color(self, button_index):
-        memory_color = super.get_button_color(button_index)
+        memory_color = super().get_button_color(button_index)
         if button_index == 1:
             gui_color = self.button1.cget("background")
         elif button_index == 2:
             gui_color = self.button2.cget("background")
         assert memory_color == gui_color
         return memory_color
-
-
     def set_button_color(self, button_index, color):
-        super.set_button_color(button_index, color)
+        super().set_button_color(button_index, color)
         if button_index == 1:
             self.todo.append(lambda : self.button1.config(background=color))
         elif button_index == 2:
             self.todo.append(lambda : self.button2.config(background=color))
-
     def set_run_callback(self, run_callback_function):
+        print("Setting run callback function")
         self.run_callback_function = run_callback_function
-
     def run(self):
         self.root.mainloop()
-
 def main():
     # create the window
     transcriber = DeepgramTranscriber()
