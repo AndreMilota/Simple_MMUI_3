@@ -84,6 +84,34 @@ Also you can answer random questions that done result in the changing of the but
 [Verbal command]: {command}
 [Gesture description]: {gestures}"""
 
+def run_MMUI(prompt_template=prompt_template, model=None, ASR_wrapper=None, gui=None, window_name="agent_1 with ASR gui 3"):
+    if model is None:
+        model = ChatOpenAI(model="gpt-3.5-turbo")
+    if gui is None:
+        gui = GUI.Window(window_name)
+    @tool
+    def set_button_color(button_index: int, new_color: str) -> None:
+        """Set the background color of a button. There are 2 buttons, 1 and 2"""
+        gui.set_button_color(button_index, new_color)
+
+    abot = Agent(model, [set_button_color], system=prompt_template)
+
+    # this function gets called from the gui, it is given the command and the gestures
+    def callback_function(command, gestures):
+        # messages = [HumanMessage(content=command)]
+        # input = {"messages": messages, "gestures": gestures}
+        # result = abot.graph.invoke(messages)
+        # Fill the prompt template with the command and gestures
+        prompt = prompt_template.format(command=command, gestures=gestures)
+        messages = [HumanMessage(content=prompt)]
+        result = abot.graph.invoke({"messages": messages})
+        print(result)
+
+    gui.set_run_callback(callback_function)
+    gui.run()
+
+
+
 def main():
     # create the window
     gui = GUI.Window("agent_1 with ASR gui 3")

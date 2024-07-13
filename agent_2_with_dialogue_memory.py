@@ -124,7 +124,6 @@ def run_MMUI(prompt_template=prompt_template, model=None, ASR_wrapper=None, gui=
     @tool
     def set_button_color(button_index: int, new_color: str) -> None:
         """Set the background color of a button. There are 2 buttons, 1 and 2"""
-        print(f"Setting button {button_index} to {new_color}")
         gui.set_button_color(button_index, new_color)
 
     abot = Agent(model, [set_button_color], system=prompt_template)

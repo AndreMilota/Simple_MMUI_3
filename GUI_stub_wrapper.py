@@ -11,34 +11,37 @@ class Window(GUI.Window):
         self.button_colors = ['white', 'white', 'white']
         self.run_callback_function = None
 
-    def set_button_color(self, button_index, color):
-        self.todo.append(lambda: self.button_colors[button_index] (background=color))
+    # def set_button_color(self, button_index, color):
+    #     self.todo.append(lambda: self.button_colors[button_index] (background=color))
 
+    # def get_button_color(self, button_index):
+    #     out = super().get_button_color(button_index)
+    #     return out
     def set_run_callback(self, run_callback_function):
         self.run_callback_function = run_callback_function
 
     def run(self):
         None
 
-    def button1_clicked(self):
-        self.gestures += "button 1 was indicated"
-
-    def button2_clicked(self):
-        self.gestures += "button 2 was indicated"
+    # def button1_clicked(self):
+    #     self.gestures += "button 1 was indicated"
+    #
+    # def button2_clicked(self):
+    #     self.gestures += "button 2 was indicated"
 
     def click_button(self, button_index):
         if button_index == 1:
             self.button1_clicked()
         elif button_index == 2:
             self.button2_clicked()
-    def take_action(self, command):
-        self.run_callback_function(command, self.gestures)
-        self.gestures = ""
-        # if self.todo != None:
-        #    self.set_button_color(self.todo[0], self.todo[1])
-        for c in self.todo:
-            c()
-        self.todo = []  # clear the todo list
+    # def take_action(self, command):
+    #     self.run_callback_function(command, self.gestures)
+    #     self.gestures = ""
+    #     # if self.todo != None:
+    #     #    self.set_button_color(self.todo[0], self.todo[1])
+    #     for c in self.todo:
+    #         c()
+    #     self.todo = []  # clear the todo list
 
 def main():
     # create the window

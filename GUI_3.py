@@ -21,10 +21,14 @@ class Window(Back_End):
         # Create Button 1
         self.button1 = tk.Button(self.root, text="Button 1", command=self.button1_clicked)
         self.button1.grid(row=0, column=1, padx=(0, 10), pady=10, sticky="ne")
+        # set the color so it is consistant with the back end
+        self.button1.config(background=super().get_button_color(1))
 
         # Create Button 2
         self.button2 = tk.Button(self.root, text="Button 2", command=self.button2_clicked)
         self.button2.grid(row=0, column=1, padx=(0, 10), pady=40, sticky="ne")
+        # set the color so it is consistant with the back end
+        self.button2.config(background=super().get_button_color(2))
 
         # Create a frame for the bottom buttons
         button_frame = tk.Frame(self.root)
@@ -48,7 +52,8 @@ class Window(Back_End):
         self.root.grid_columnconfigure(0, weight=1)
         self.root.grid_columnconfigure(1, weight=0)
 
-        self.todo = []
+        # when I tryed it without the delayed_action list it did now work
+        self.delayed_action = []
 
         # Bind F4 key events
         self.root.bind('<KeyPress-F4>', self.on_f4_press)
@@ -121,16 +126,20 @@ class Window(Back_End):
             self.toggle_ASR_button.config(text="Stop Transcription")
             self.is_transcribing = True
     # widget callbacks ------------------------------
-    def run_callback(self):
-        command = self.command_entry.get("1.0", "end-1c")
-        print(f"Running command: {command}")
+
+    def take_action(self, command):
         self.run_callback_function(command, self.gestures)
         self.gestures = ""
         #if self.todo != None:
         #    self.set_button_color(self.todo[0], self.todo[1])
-        for command in self.todo:
+        print("todo list size ", len(self.delayed_action))
+        for command in self.delayed_action:
             command()
-        self.todo = [] # clear the todo list
+        self.delayed_action = [] # clear the todo list
+    def run_callback(self):
+        command = self.command_entry.get("1.0", "end-1c")
+        print(f"Running command: {command}")
+        self.take_action(command)
     def button1_clicked(self):
         self.gestures += "button 1 was indicated"
         print("Button 1 clicked")
@@ -147,11 +156,14 @@ class Window(Back_End):
         assert memory_color == gui_color
         return memory_color
     def set_button_color(self, button_index, color):
-        super().set_button_color(button_index, color)
+        # Capture the class and instance in the lambda
+        cls = super(Window, self)
+        self.delayed_action.append(lambda: cls.set_button_color(button_index, color))
+
         if button_index == 1:
-            self.todo.append(lambda : self.button1.config(background=color))
+            self.delayed_action.append(lambda : self.button1.config(background=color))
         elif button_index == 2:
-            self.todo.append(lambda : self.button2.config(background=color))
+            self.delayed_action.append(lambda : self.button2.config(background=color))
     def set_run_callback(self, run_callback_function):
         print("Setting run callback function")
         self.run_callback_function = run_callback_function
