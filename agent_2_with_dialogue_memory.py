@@ -1,6 +1,6 @@
 #agent_1.py
 # uses open AI
-import GUI_3 as GUI
+import GUI_4 as GUI
 
 # inports
 # had to install "python-dotenv" to get this to work. I could not get dotenv to work it gave me an error
@@ -116,14 +116,14 @@ Previous conversation:
 [Gesture description]: {gestures}"""
 
 
-def run_MMUI(prompt_template=prompt_template, model=None, ASR_wrapper=None, gui=None, window_name="agent_1 with ASR gui 3"):
+def run_MMUI(prompt_template=prompt_template, model=None, ASR_wrapper=None, gui=None, window_name="agent_2 with ASR gui 4"):
     if model is None:
         model = ChatOpenAI(model="gpt-3.5-turbo")
     if gui is None:
-        gui = GUI.Window(window_name)
+        gui = GUI.Window(window_name,number_of_buttons=3)
     @tool
     def set_button_color(button_index: int, new_color: str) -> None:
-        """Set the background color of a button. There are 2 buttons, 1 and 2"""
+        """Set the background color of a button."""
         gui.set_button_color(button_index, new_color)
 
     abot = Agent(model, [set_button_color], system=prompt_template)
