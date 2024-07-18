@@ -104,9 +104,12 @@ class Agent:
 
 prompt_template = """You are a multimodal agent for controlling a simple app. \
 You will be given the text of the commands the user issues. \
-If the user also makes a gesture along with the command you will be given a description \
-of any gestures the user made during the turn. The app lets users set the color of 2 buttons \
-in the widget. \
+If the user also makes a gesture along with the command you will be given a description. \
+of any gestures the user made during the turn. \
+The app lets users set the color of buttons. \
+There are {number_of_bs} buttons. \
+Button indexis start at 0. \
+Buttions 0 is above 1 and 2 is below 1 etc. \
 Also you can answer random questions that don't result in the changing of the button's state.
 
 Previous conversation:
@@ -121,6 +124,10 @@ def run_MMUI(prompt_template=prompt_template, model=None, ASR_wrapper=None, gui=
         model = ChatOpenAI(model="gpt-3.5-turbo")
     if gui is None:
         gui = GUI.Window(window_name,number_of_buttons=3)
+
+    # modify the prompt to reflect the number of buttons
+    nunber_of_buttons = gui.get_number_of_buttons()
+
     @tool
     def set_button_color(button_index: int, new_color: str) -> None:
         """Set the background color of a button."""
@@ -130,6 +137,7 @@ def run_MMUI(prompt_template=prompt_template, model=None, ASR_wrapper=None, gui=
 
     def callback_function(command, gestures):
         prompt = prompt_template.format(
+            number_of_bs=nunber_of_buttons,
             history=abot.memory.load_memory_variables({})["history"],
             command=command,
             gestures=gestures
