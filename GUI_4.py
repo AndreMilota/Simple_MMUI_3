@@ -6,7 +6,7 @@ from command_buffer import Command_Buffer
 from back_end import Back_End
 
 class Window(Back_End):
-    def __init__(self, title="GUI 4", transcriber=None, number_of_buttons=2):
+    def __init__(self, title="GUI 4", transcriber=None, number_of_buttons=3):
         super().__init__(number_of_buttons=number_of_buttons)
         self.gestures = ""
 
@@ -161,7 +161,7 @@ class Window(Back_End):
     # agent tolls calls ------------------------------
 
     def button_clicked(self, button_index):
-        description = f"button {button_index + 1} was indicated"
+        description = f"button {button_index} was indicated"
         self.gestures += description
         print(description)
     def get_button_color(self, button_index):

@@ -3,7 +3,7 @@
  # re-implement them in this class. For instance we might want to add something to the GUI that tracks the history of
  # all the buttons.
 
-import GUI_3 as GUI
+import GUI_4 as GUI
 
 class Window(GUI.Window):
     def __init__(self, title):
@@ -30,10 +30,11 @@ class Window(GUI.Window):
     #     self.gestures += "button 2 was indicated"
 
     def click_button(self, button_index):
-        if button_index == 1:
-            self.button1_clicked()
-        elif button_index == 2:
-            self.button2_clicked()
+        self.button_clicked(button_index)
+        # if button_index == 1:
+        #     self.button1_clicked()
+        # elif button_index == 2:
+        #     self.button2_clicked()
     # def take_action(self, command):
     #     self.run_callback_function(command, self.gestures)
     #     self.gestures = ""
