@@ -134,6 +134,10 @@ def run_MMUI(prompt_template=prompt_template, model=None, ASR_wrapper=None, gui=
         gui.set_button_color(button_index, new_color)
 
     abot = Agent(model, [set_button_color], system=prompt_template)
+    # this does not work for some
+    # tools = gui.get_tools()
+    # abot = Agent(model, tools, system=prompt_template)
+
 
     def callback_function(command, gestures):
         prompt = prompt_template.format(
