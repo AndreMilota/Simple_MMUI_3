@@ -25,7 +25,7 @@ from langchain_core.prompts import (
     HumanMessagePromptTemplate,
 )
 from langchain.chains import LLMChain
-from langchain.memory import ConversationBufferMemory
+
 
 
 #  python.exe -m pip install --upgrade pip
@@ -45,62 +45,71 @@ class AgentState(TypedDict):
 
 class Agent:
 
-    def __init__(self, model, tools, system=""):
-        self.system = system # system message
-        self.memory = ConversationBufferMemory(return_messages=True)
+    def __init__(self, model, tools, system="", max_messages=50):
+        self.system = system  # system message
+        self.max_messages = max_messages  # maximum number of messages to retain in context
+        self.message_count = 0  # track the number of messages processed
 
         graph = StateGraph(AgentState)
         graph.add_node("llm", self.call_openai)
         graph.add_node("action", self.take_action)
+        graph.add_node("print_response", self.print_response)
+
         graph.add_conditional_edges(
             "llm",
             self.exists_action,
-            {True: "action", False: END}
+            {True: "action", False: "print_response"}
         )
         graph.add_edge("action", "llm")
+        graph.add_edge("print_response", "llm")
         graph.set_entry_point("llm")
         self.graph = graph.compile()
         self.tools = {t.name: t for t in tools}
         self.model = model.bind_tools(tools)
+
     def exists_action(self, state: AgentState):
         result = state['messages'][-1]
         return len(result.tool_calls) > 0
+
     def call_openai(self, state: AgentState):
         messages = state['messages']
         if self.system:
             messages = [SystemMessage(content=self.system)] + messages
 
-        # Add memory to the messages
-        memory_messages = self.memory.load_memory_variables({})["history"]
-        messages = memory_messages + messages
+        # Ensure we do not exceed the maximum message context length
+        if len(messages) > self.max_messages:
+            messages = messages[-self.max_messages:]
 
         message = self.model.invoke(messages)
+        state['messages'].append(message)
+        self.message_count += 1
 
-        # Save the interaction to memory
-        self.memory.save_context({"input": messages[-1].content}, {"output": message.content})
+        # Terminate the loop after a set number of messages to avoid infinite loops
+        if self.message_count >= self.max_messages:
+            print("Maximum message limit reached, terminating loop.")
+            return {'messages': state['messages'], 'terminate': True}
 
-        return {'messages': [message]}
-    # def call_openai(self, state: AgentState):
-    #     messages = state['messages']
-    #     if self.system:
-    #         messages = [SystemMessage(content=self.system)] + messages
-    #     message = self.model.invoke(messages)
-    #     return {'messages': [message]}
+        return {'messages': state['messages'], 'terminate': False}
+
     def take_action(self, state: AgentState):
         tool_calls = state['messages'][-1].tool_calls
         results = []
         for t in tool_calls:
             print(f"Calling: {t}")
-            if not t['name'] in self.tools:      # check for bad tool name from LLM
+            if not t['name'] in self.tools:  # check for bad tool name from LLM
                 print("\n ....bad tool name....")
                 result = "bad tool name, retry"  # instruct LLM to retry if bad
             else:
                 result = self.tools[t['name']].invoke(t['args'])
             results.append(ToolMessage(tool_call_id=t['id'], name=t['name'], content=str(result)))
         print("Back to the model!")
-        return {'messages': results}
+        state['messages'].extend(results)
+        return {'messages': state['messages']}
 
-
+    def print_response(self, state: AgentState):
+        response = state['messages'][-1].content
+        print(f"Response: {response}")
+        return {'messages': state['messages']}
 
 prompt_template = """You are a multimodal agent for controlling a simple app. \
 You will be given the text of the commands the user issues. \
@@ -111,9 +120,6 @@ There are {number_of_bs} buttons. \
 Button indexis start at 0. \
 Buttions 0 is above 1 and 2 is below 1 etc. \
 Also you can answer random questions that don't result in the changing of the button's state.
-
-Previous conversation:
-{history}
 
 [Verbal command]: {command}
 [Gesture description]: {gestures}"""
@@ -146,14 +152,9 @@ def run_MMUI(prompt_template=prompt_template, model=None, ASR_wrapper=None, gui=
     # tools = gui.get_tools()
     # abot = Agent(model, tools, system=prompt_template)
 
-
-
-
-
     def callback_function(command, gestures):
         prompt = prompt_template.format(
             number_of_bs=nunber_of_buttons,
-            history=abot.memory.load_memory_variables({})["history"],
             command=command,
             gestures=gestures
         )

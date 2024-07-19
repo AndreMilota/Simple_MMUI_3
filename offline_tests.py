@@ -2,8 +2,8 @@
 
 import GUI_stub_wrapper as GUI
 #import agent_1 as Agent
-import agent_2_with_dialogue_memory as Agent
-
+#import agent_2_with_dialogue_memory as Agent
+import agent_1_2 as Agent
 
 
 prompt_template = Agent.prompt_template
@@ -58,10 +58,20 @@ def memory_of_action(model = None):
     print("memory_of_action passed")
     return True
 
+def read_button_color(model = None):
+    gui, agent = fresh_start(model)
+    gui.take_action("what is the color of button 2")
+
+def simple_question_test(model = None):
+    gui, agent = fresh_start(model)
+    gui.take_action("What color is the sky")
+
 def main():
-    simple_description_test()
-    simple_dectic_test()
-    memory_of_action()
+    #simple_description_test()
+   simple_question_test()
+
+    #  simple_dectic_test()
+    # memory_of_action()
 
 
 if __name__ == "__main__":

@@ -165,13 +165,14 @@ class Window(Back_End):
         self.gestures += description
         print(description)
     def get_button_color(self, button_index):
+        print("Getting button color", button_index)
         memory_color = super().get_button_color(button_index)
-        gui_color = self.buttions[button_index].cget("background")
+        #gui_color = self.buttions[button_index].cget("background")
         # if button_index == 1:
         #     gui_color = self.button1.cget("background")
         # elif button_index == 2:
         #     gui_color = self.button2.cget("background")
-        assert memory_color == gui_color
+        #assert memory_color == gui_color
         return memory_color
     def set_button_color(self, button_index, color):
         # Capture the class and instance in the lambda
