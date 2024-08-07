@@ -101,7 +101,7 @@ def main():
     def callback_function(command, gestures):
         # messages = [HumanMessage(content=command)]
         # input = {"messages": messages, "gestures": gestures}
-        # result = abot.graph.invoke(messages)
+        # result = abot.graph.invoke(messages)rrrrr
         # Fill the prompt template with the command and gestures
         prompt = prompt_template.format(command=command, gestures=gestures)
         messages = [HumanMessage(content=prompt)]
