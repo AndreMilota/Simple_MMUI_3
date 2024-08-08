@@ -3,7 +3,7 @@ import os
 import json
 from groq import Groq
 import GUI_4 as GUI
-
+import offline_tests as OT
 # load the key for the Groq API
 groq_key = os.environ.get('GROQ_KEY')
 
@@ -114,6 +114,11 @@ def run_MMUI(ASR_wrapper=None, gui=None, window_name=None):
 
     gui.set_run_callback(callback_function)
     gui.run()
+
+def run_offline_tests():
+    OT.simple_description_test()
+    OT.simple_dectic_test()
+    OT.memory_of_action()
 
 
 def main():
