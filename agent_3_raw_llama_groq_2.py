@@ -20,7 +20,8 @@ The application you are controlling has {number_of_buttons} buttons.
 You can set there by calling the function called set_button_color.
 It takes two arguments, the index of the button and the color you want to set it to.
 it will return something like 'Set button 1 to red'.
-The user may also ask a question that does not entail making a function call."""
+The user may also ask a question that does not entail making a function call.
+When asked a question answer with a brief response unless the user asks for you to provide longer responses."""
 
 class MMUI:
     def __init__(self, gui=None, window_name=None):
@@ -161,7 +162,7 @@ def main():
     # to run it with offline tests
     gui = GUI_Offline.Window("window_name")
     mmui = MMUI(gui=gui)
-    OT.simple_question_test(mmui)
+    OT.simple_description_test(mmui)
 
 
 if __name__ == "__main__":
