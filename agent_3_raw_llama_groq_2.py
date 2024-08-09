@@ -4,7 +4,7 @@ import json
 from groq import Groq
 import GUI_4 as GUI
 import GUI_stub_wrapper as GUI_Offline # for testing
-import offline_tests as OT
+import offline_tests_2 as OT
 
 # load the key for the Groq API
 groq_key = os.environ.get('GROQ_KEY')
@@ -28,9 +28,9 @@ class MMUI:
                 # get the python file name
                 window_name = os.path.basename(__file__).split(".")[0]
             gui = GUI.Window(number_of_buttons=3, title=window_name)
-        MMUI_GUI = gui
+        MMUI_GUI = gui # TODO WE MAY REMOVE THIS LINE
+        self.gui = gui
         nunber_of_buttons = gui.get_number_of_buttons()
-
 
         def set_button_color(button_index: int, new_color: str) -> str:
             """Set the background color of a button."""
@@ -73,13 +73,13 @@ class MMUI:
             # give an example of a command
             {
                 "role": "user",
-                "content": "Make this red. Button 1 was inidcated"
+                "content": "Make this red. Button 1 was indicated"
             },
             {
                 "role": "assistant",
                 'tool_calls': [
                     {
-                        #'id': 'call_ywm8', leaving this out dont know the best way to set it
+                        'id': 'call_ywm8',
                         'function': {
                             'name': 'set_button_color',
                             'arguments': '{"button_index": 1, "color_name": "red"}'
@@ -96,6 +96,7 @@ class MMUI:
             if gestures:
                 c_and_g += gestures
 
+            #messages = prompt + example + [ example seems to be causing a problem
             messages = prompt + example + [
                 {
                     "role": "user",
@@ -130,27 +131,27 @@ class MMUI:
                     function_name = tool_call.function.name
                     function_to_call = available_functions[function_name]
                     function_args = json.loads(tool_call.function.arguments)
-                    function_response = function_to_call(
-                        expression=function_args.get("expression")
-                    )
+                    button_index = function_args.get("button_index")
+                    new_color = function_args.get("color_name")
+
+                    function_response = function_to_call(button_index, new_color)
+
                     print("function_response = ", function_response)
                 return ""
             else:
                 return response_message.content
 
         gui.set_run_callback(callback_function)
+
     def reset(self):
         self.gui.reset()
 
     def get_gui(self):
         return self.gui
 
-
     def run(self):
-        self.gui.set_run_callback(self.callback_function)
+        #self.gui.set_run_callback(self.callback_function) this was set in the constructor
         self.gui.run()
-
-    # define the tools
 
 def main():
     # to run it normaly
@@ -159,8 +160,8 @@ def main():
     # to run it with offline tests
     gui = GUI_Offline.Window("window_name")
     mmui = MMUI(gui=gui)
+    OT.simple_dectic_test(mmui)
 
-    mmui.run()
 
 if __name__ == "__main__":
     main()
