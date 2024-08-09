@@ -161,7 +161,7 @@ class Window(Back_End):
     # agent tolls calls ------------------------------
 
     def button_clicked(self, button_index):
-        description = f"button {button_index} was indicated"
+        description = f"Button {button_index} was indicated"
         self.gestures += description
         print(description)
     def get_button_color(self, button_index):
