@@ -15,11 +15,12 @@ client = Groq(api_key=groq_key, )
 MMUI_GUI = False # TODO figure out how to make this a class member variable in a way that the call backe can us eit
 
 prompt_core = """You are a multimodal agent for controlling a simple app.
-You will be given the text of the commands the user issues and if they make any gestures you will a description of them.
+You will be given the text of the commands the user issues and if they make any gestures you will be given a description of them.
 The application you are controlling has {number_of_buttons} buttons.
 You can set there by calling the function called set_button_color.
 It takes two arguments, the index of the button and the color you want to set it to.
-it will return something like 'Set button 1 to red'."""
+it will return something like 'Set button 1 to red'.
+The user may also ask a question that does not entail making a function call."""
 
 class MMUI:
     def __init__(self, gui=None, window_name=None):
