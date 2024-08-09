@@ -160,7 +160,7 @@ def main():
     # to run it with offline tests
     gui = GUI_Offline.Window("window_name")
     mmui = MMUI(gui=gui)
-    OT.simple_dectic_test(mmui)
+    OT.simple_question_test(mmui)
 
 
 if __name__ == "__main__":
