@@ -32,7 +32,7 @@ class MMUI:
             gui = GUI.Window(number_of_buttons=3, title=window_name)
         MMUI_GUI = gui # TODO WE MAY REMOVE THIS LINE
         self.gui = gui
-        nunber_of_buttons = gui.get_number_of_buttons()
+        number_of_buttons = gui.get_number_of_buttons()
 
         def set_button_color(button_index: int, new_color: str) -> str:
             """Set the background color of a button."""
@@ -98,7 +98,6 @@ class MMUI:
             if gestures:
                 c_and_g += gestures
 
-            #messages = prompt + example + [ example seems to be causing a problem
             messages = prompt + example + [
                 {
                     "role": "user",
@@ -162,7 +161,7 @@ def main():
     # to run it with offline tests
     gui = GUI_Offline.Window("window_name")
     mmui = MMUI(gui=gui)
-    OT.simple_description_test(mmui)
+    OT.simple_dectic_test(mmui)
 
 
 if __name__ == "__main__":

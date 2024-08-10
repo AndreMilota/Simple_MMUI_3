@@ -4,7 +4,7 @@
 def simple_dectic_test(agent):
     gui = agent.get_gui()
     gui.click_button(2)
-    gui.take_action("set this button to red")
+    gui.take_action("set this button to red") # users input
     c = gui.get_button_color(2)
     if not c == "red":
         print("simple_dectic_test failed")
