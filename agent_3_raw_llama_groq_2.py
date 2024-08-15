@@ -156,14 +156,14 @@ class MMUI:
 
 def main():
     # to run it normaly
-    gui = GUI.Window("window_name")
-    mmui = MMUI(gui)
-    mmui.run()
+    # gui = GUI.Window("window_name")
+    # mmui = MMUI(gui)
+    # mmui.run()
 
     # to run it with offline tests
-    # gui = GUI_Offline.Window("window_name")
-    # mmui = MMUI(gui=gui)
-    # OT.simple_dectic_test(mmui)
+    gui = GUI_Offline.Window("window_name")
+    mmui = MMUI(gui=gui)
+    OT.simple_dectic_test(mmui)
 
 
 if __name__ == "__main__":
