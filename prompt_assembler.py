@@ -18,8 +18,8 @@ class Prompt_Assembler:
         else:
             self.prompt_core = prompt_core
     def compute_prompt(self, command :str, gestures :str) -> list:
-        tool_descriptions, tool_examples = self.tool_box.get_prompt_elements(command)
-        prompt = self.prompt_core + tool_descriptions + tool_examples
+        tool_examples = self.tool_box.get_tool_examples(command)
+        prompt = self.prompt_core + tool_examples
         # TODO add history here
         c_and_g = f"{command} " # we want to make a copy of the command
         if gestures:

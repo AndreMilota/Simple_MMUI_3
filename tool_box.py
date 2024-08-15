@@ -8,23 +8,34 @@ from typing import Callable, Any
 
 class Tool_Box:
     def __init__(self):
-        self.available_functions = {}
-        self.tool_descriptions = []
-        self.tool_examples = []
+        self.available_functions = {}  # this is used to process the call requests
+        self.tool_descriptions = []  # this is used to generate the prompt to let the LLM know what tools are available
+        self.tool_examples = []  # this is used to generate the prompt to give the LLM of examples of tool use it may not have a one to one mapping with the tools
 
-    def add_tool(self, tool: Callable[..., str], description :str, example: dict=None):
+    def add_tool_mandatory_args(self, tool: Callable[..., str], description: str, parameters: dict,
+                                example: list = None):
+        # add to available_functions
         # get the name of the tool using the inspect module
         name = tool.function.__name__
         self.available_functions[name] = tool
-        if description:
-            self.tool_descriptions.append(description)
+
+        # add to tool_descriptions
+        # get a list of all the properties
+        parameters_list = list(parameters['properties'].keys())
+
+        description = {
+            "type": "function",
+            "function": {
+                "name": name,
+                "description": "Sets a button to a given color",
+                "parameters": parameters,
+                "required": parameters_list,
+            },
+        }
         # TODO add something so we can pull the description out of the function using the inspect module
+
         if example:
             self.add_example(example)
-
-    def get_prompt_elements(self, command: str) -> tuple:
-        # we may want to add a function that returns the tool descriptions and examples
-        return self.tool_descriptions, self.tool_examples
 
     def add_example(self, example: dict):
         self.tool_examples.append(example)
@@ -37,3 +48,11 @@ class Tool_Box:
         arguments = call_request['function']['arguments']
         # call the function
         return tool(**arguments)
+
+    # TODO add RAG stuff to these functions to skale it
+    def get_tools(self, command: str) -> list:
+        return self.tool_descriptions
+
+    def get_tool_examples(self, command: str) -> list:
+        return self.tool_examples
+

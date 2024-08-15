@@ -9,6 +9,8 @@ from agent_core import Agent_Core
 def load_tools(gui) -> Tool_Box:
 
     out = Tool_Box()
+
+    # add the tools here
     def set_button_color(button_index: int, new_color: str) -> str:
         """Set the background color of a button."""
         gui.set_button_color(button_index, new_color)
@@ -39,22 +41,21 @@ def load_tools(gui) -> Tool_Box:
 
     description = "Sets a button to a given color"
     parameters = {
-        "type": "object",
-        "properties": {
-            "button_index": {
-                "type": "integer",
-                "description": "The index of the button to change the color of. "
-                               "Buttons are numbered starting from 0 up to n - 1.",
-            },
-            "color_name": {
-                "type": "string",
-                "description": "The name of the color to change the button to",
-            },
+        "button_index": {
+            "type": "integer",
+            "description": "The index of the button to change the color of. "
+                           "Buttons are numbered starting from 0 up to n - 1.",
         },
-        "required": ["button_index", "color_name"],
+        "color_name": {
+            "type": "string",
+            "description": "The name of the color to change the button to",
+        },
     }
 
-    out.add_tool(tool=set_button_color,
+    out.add_tool_mandatory_args(tool=set_button_color, description=description, parameters=parameters, example=example)
+
+    # ------------------------------------------------------------------------------
+    # more tools go here
 
     return out
 
@@ -80,7 +81,7 @@ class Agent(Agent_Core):
         self.gui.reset()
 
 def main():
-    # for off line testing
+    # for offline testing
     gui = OT.GUIOffline()
     # load the toolbox
 
