@@ -125,7 +125,7 @@ class MMUI:
                 #messages.append(response_message)
                 print("tool_calls length = ", len(tool_calls))
                 print("tool_calls = ", tool_calls)
-                    for tool_call in tool_calls:
+                for tool_call in tool_calls:
                     print("tool_calls length in loop = ", len(tool_calls))
                     print("tool_calls in loop = ", tool_calls)
                     print("tool_call = ", tool_call)

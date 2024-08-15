@@ -1,6 +1,5 @@
 # This module connects the agent core with the application and starts everything running.
 
-from tool_wrapper import Tool_Wrapper
 from tool_box import Tool_Box
 
 import agent_core as AC
@@ -38,9 +37,24 @@ def load_tools(gui) -> Tool_Box:
         }
     ]
 
-    tw = Tool_Wrapper(tool=set_button_color, examples=example)
+    description = "Sets a button to a given color"
+    parameters = {
+        "type": "object",
+        "properties": {
+            "button_index": {
+                "type": "integer",
+                "description": "The index of the button to change the color of. "
+                               "Buttons are numbered starting from 0 up to n - 1.",
+            },
+            "color_name": {
+                "type": "string",
+                "description": "The name of the color to change the button to",
+            },
+        },
+        "required": ["button_index", "color_name"],
+    }
 
-    out.add_tool(tw)
+    out.add_tool(tool=set_button_color,
 
     return out
 
