@@ -125,7 +125,7 @@ class MMUI:
                 #messages.append(response_message)
                 print("tool_calls length = ", len(tool_calls))
                 print("tool_calls = ", tool_calls)
-                for tool_call in tool_calls:
+                    for tool_call in tool_calls:
                     print("tool_calls length in loop = ", len(tool_calls))
                     print("tool_calls in loop = ", tool_calls)
                     print("tool_call = ", tool_call)
@@ -163,7 +163,8 @@ def main():
     # to run it with offline tests
     gui = GUI_Offline.Window("window_name")
     mmui = MMUI(gui=gui)
-    OT.simple_dectic_test(mmui)
+
+    #OT.simple_description_test(mmui)
 
 
 if __name__ == "__main__":

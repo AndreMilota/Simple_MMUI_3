@@ -1,0 +1,1 @@
+# This class is used to process the responses
