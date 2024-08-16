@@ -164,7 +164,7 @@ def main():
     gui = GUI_Offline.Window("window_name")
     mmui = MMUI(gui=gui)
 
-    #OT.simple_description_test(mmui)
+    OT.simple_description_test(mmui)
 
 
 if __name__ == "__main__":

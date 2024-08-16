@@ -9,6 +9,8 @@ from tool_box import Tool_Box
 import os
 import json
 from groq import Groq
+from typing import Callable, Any
+
 
 # load the key for the Groq API
 groq_key = os.environ.get('GROQ_KEY')
@@ -16,8 +18,11 @@ MODEL = 'llama3-groq-70b-8192-tool-use-preview'
 # get the key and create a client
 client = Groq(api_key=groq_key, )
 
+
+def pretty_print(obj: Any) -> None:
+    print(json.dumps(obj, indent=4))
 class Agent_Core():
-    def __init__(self, tool_box: Tool_Box, core_prompt, gui):
+    def __init__(self, tool_box: Tool_Box, gui, core_prompt = None):
         self.tool_box = tool_box
         self.prompt_assembler = Prompt_Assembler(tool_box, core_prompt)
         self.available_functions = tool_box.available_functions   # we just link to it without a function as this will remain the same for all commands
@@ -27,8 +32,9 @@ class Agent_Core():
             tools = self.tool_box.get_tools(command)
 
             print("messages", messages)
+            pretty_print(messages)
             print("tools", tools)
-
+            pretty_print(tools)
             # call the LLM
             response = client.chat.completions.create(  # <------ call the LLM
                 model=MODEL,
@@ -54,6 +60,11 @@ class Agent_Core():
                     function_name = tool_call.function.name
                     function_to_call = self.available_functions[function_name]
                     function_args = json.loads(tool_call.function.arguments)
+
+                    # for testiing get a list of the arguments the function takes
+                    args = function_to_call.__code__.co_varnames
+                    print("args = ", args)
+
                     function_response = function_to_call(**function_args)
 
                     print("function_response = ", function_response)
@@ -61,7 +72,7 @@ class Agent_Core():
                 else:
                     return response_message.content
 
-            gui.set_run_callback(callback_function)
+        gui.set_run_callback(callback_function)
 
         def reset(self):
             self.gui.reset()
@@ -72,3 +83,4 @@ class Agent_Core():
         def run(self):
             # self.gui.set_run_callback(self.callback_function) this was set in the constructor
             self.gui.run()
+

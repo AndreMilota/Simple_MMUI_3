@@ -1,4 +1,4 @@
-import agent_2_with_dialogue_memory as ag
+import agent_8_15_2024_modular_1 as ag
 #import agent_1_2 as ag
 
 

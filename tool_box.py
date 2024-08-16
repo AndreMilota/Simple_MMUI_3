@@ -4,7 +4,12 @@
 # be included in a prompt. Additionally, this class will be used by the parser to retrieve a list of tools
 import inspect
 from typing import Callable, Any
-
+import json
+from typing import List, Any
+def flatten_list(list_of_lists: List[List[Any]]) -> List[Any]:
+    return [item for sublist in list_of_lists for item in sublist]
+def pretty_print(obj: Any) -> None:
+    print(json.dumps(obj, indent=4))
 
 class Tool_Box:
     def __init__(self):
@@ -16,12 +21,12 @@ class Tool_Box:
                                 example: list = None):
         # add to available_functions
         # get the name of the tool using the inspect module
-        name = tool.function.__name__
+        name = tool.__name__
         self.available_functions[name] = tool
 
         # add to tool_descriptions
         # get a list of all the properties
-        parameters_list = list(parameters['properties'].keys())
+        parameters_list = list(parameters.keys())
 
         description = {
             "type": "function",
@@ -32,6 +37,14 @@ class Tool_Box:
                 "required": parameters_list,
             },
         }
+
+        self.tool_descriptions += [description]
+        # pritty print the tool_descriptions
+        print("Tool tool_descriptions:")
+        pretty_print(self.tool_descriptions)
+
+        for element in self.tool_descriptions:
+            print(element, "\n")
         # TODO add something so we can pull the description out of the function using the inspect module
 
         if example:
@@ -54,5 +67,7 @@ class Tool_Box:
         return self.tool_descriptions
 
     def get_tool_examples(self, command: str) -> list:
-        return self.tool_examples
+        out = flatten_list(self.tool_examples)
+        return out
+
 

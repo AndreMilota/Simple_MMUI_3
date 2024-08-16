@@ -4,6 +4,7 @@ from tool_box import Tool_Box
 
 import agent_core as AC
 import GUI_4 as GUI
+import GUI_stub_wrapper as GUI_Offline
 import offline_tests_2 as OT
 from agent_core import Agent_Core
 def load_tools(gui) -> Tool_Box:
@@ -11,13 +12,13 @@ def load_tools(gui) -> Tool_Box:
     out = Tool_Box()
 
     # add the tools here
-    def set_button_color(button_index: int, new_color: str) -> str:
+    def set_button_color(button_index: int, color_name: str) -> str:
         """Set the background color of a button."""
-        gui.set_button_color(button_index, new_color)
-        out = f"Set button {button_index} to {new_color}"
+        gui.set_button_color(button_index, color_name)
+        out = f"Set button {button_index} to {color_name}"
         return out
 
-    # we could use something to make this easier
+    # todo we could use something to make this easier
     example = [
         # give an example of a command
         {
@@ -38,6 +39,9 @@ def load_tools(gui) -> Tool_Box:
             ]
         }
     ]
+
+    # todo we need a way to keep the variable names in sync with the names used in the examples or at least check to see
+    # if they are in consistent
 
     description = "Sets a button to a given color"
     parameters = {
@@ -64,9 +68,8 @@ class Agent(Agent_Core):
         self.gui = gui
         self.tool_box = load_tools(gui)
         # init the base class
-        super().__init__(self.tool_box)
-        # link the GUI to the agent
-        gui.set_run_callback(self.take_action)
+        super().__init__(self.tool_box, gui)
+
 
     def get_gui(self):
         return self.gui
@@ -82,8 +85,10 @@ class Agent(Agent_Core):
 
 def main():
     # for offline testing
-    gui = OT.GUIOffline()
-    # load the toolbox
+    gui = GUI_Offline.Window("window_name")
+    mmui = Agent(gui)
+    OT.simple_description_test(mmui)
 
-
+if __name__ == "__main__":
+    main()
 
