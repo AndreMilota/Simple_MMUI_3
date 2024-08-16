@@ -70,7 +70,6 @@ class Agent(Agent_Core):
         # init the base class
         super().__init__(self.tool_box, gui)
 
-
     def get_gui(self):
         return self.gui
 
@@ -87,7 +86,9 @@ def main():
     # for offline testing
     gui = GUI_Offline.Window("window_name")
     mmui = Agent(gui)
-    OT.simple_description_test(mmui)
+    # OT.simple_dectic_test(mmui)
+    # OT.simple_description_test(mmui)
+    OT.simple_question_test(mmui)
 
 if __name__ == "__main__":
     main()

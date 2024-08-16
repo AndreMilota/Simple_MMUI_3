@@ -21,6 +21,8 @@ def simple_description_test(agent):
         return False
     print("simple_description_test passed")
     return True
+
+# todo add code to make this test pass. You may want to create a branch for this
 def memory_of_action(agent):
     gui = agent.get_gui()
     gui.take_action("make button two red") # we are not using a gesture in this test

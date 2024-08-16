@@ -18,7 +18,7 @@ MODEL = 'llama3-groq-70b-8192-tool-use-preview'
 # get the key and create a client
 client = Groq(api_key=groq_key, )
 
-
+# todo move pretty_print to a test file
 def pretty_print(obj: Any) -> None:
     print(json.dumps(obj, indent=4))
 class Agent_Core():
@@ -31,10 +31,10 @@ class Agent_Core():
             messages = self.prompt_assembler.compute_prompt(command, gestures)
             tools = self.tool_box.get_tools(command)
 
-            print("messages", messages)
-            pretty_print(messages)
-            print("tools", tools)
-            pretty_print(tools)
+            # print("messages", messages)
+            # pretty_print(messages)
+            # print("tools", tools)
+            # pretty_print(tools)
             # call the LLM
             response = client.chat.completions.create(  # <------ call the LLM
                 model=MODEL,
