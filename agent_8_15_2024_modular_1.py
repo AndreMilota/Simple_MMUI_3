@@ -23,7 +23,7 @@ def load_tools(gui) -> Tool_Box:
         # give an example of a command
         {
             "role": "user",
-            "content": "Make this red. Button 1 was indicated"
+            "content": "Make this white. Button 1 was indicated"
         },
         {
             "role": "assistant",
@@ -32,7 +32,7 @@ def load_tools(gui) -> Tool_Box:
                     'id': 'call_ywm8',
                     'function': {
                         'name': 'set_button_color',
-                        'arguments': '{"button_index": 1, "color_name": "red"}'
+                        'arguments': '{"button_index": 1, "color_name": "white"}' # earlyer we used red but I am afraid it will interfear with
                     },
                     'type': 'function'
                 }
@@ -86,9 +86,9 @@ def main():
     # for offline testing
     gui = GUI_Offline.Window("window_name")
     mmui = Agent(gui)
-    # OT.simple_dectic_test(mmui)
+    OT.simple_dectic_test(mmui)
     # OT.simple_description_test(mmui)
-    OT.simple_question_test(mmui)
+    # OT.simple_question_test(mmui)
 
 if __name__ == "__main__":
     main()

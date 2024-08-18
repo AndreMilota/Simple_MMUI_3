@@ -8,7 +8,7 @@ import GUI_4 as GUI
 class Window(GUI.Window):
     def __init__(self, title):
         super().__init__(title)
-        self.button_colors = ['white', 'white', 'white']
+        #self.button_colors = ['white', 'white', 'white']
         self.run_callback_function = None
 
     # def set_button_color(self, button_index, color):

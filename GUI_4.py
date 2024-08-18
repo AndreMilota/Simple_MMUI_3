@@ -163,6 +163,9 @@ class Window(Back_End):
     def set_button_color(self, button_index, color):
         # Capture the class and instance in the lambda
         cls = super(Window, self)
+        # todo see if we still need delayed actioins or if we can just do it now
+        # todo add code to check color and reject invalid colors
+        # todo add code to repor if calling this made any change
         self.delayed_action.append(lambda: cls.set_button_color(button_index, color))
         self.delayed_action.append(lambda: self.buttons[button_index].config(background=color))
 
