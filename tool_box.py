@@ -28,17 +28,17 @@ class Tool_Box:
         # get a list of all the properties
         parameters_list = list(parameters.keys())
 
-        description = {
+        t_description = {
             "type": "function",
             "function": {
                 "name": name,
-                "description": "Sets a button to a given color",
+                "description": description,
                 "parameters": parameters,
                 "required": parameters_list,
             },
         }
 
-        self.tool_descriptions += [description]
+        self.tool_descriptions += [t_description]
         # pritty print the tool_descriptions
         print("Tool tool_descriptions:")
         pretty_print(self.tool_descriptions)

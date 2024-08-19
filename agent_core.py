@@ -31,44 +31,62 @@ class Agent_Core():
             messages = self.prompt_assembler.compute_prompt(command, gestures)
             tools = self.tool_box.get_tools(command)
 
-            # print("messages", messages)
-            # pretty_print(messages)
-            # print("tools", tools)
-            # pretty_print(tools)
-            # call the LLM
-            response = client.chat.completions.create(  # <------ call the LLM
-                model=MODEL,
-                messages=messages,
-                tools=tools,
-                tool_choice="auto",
-                max_tokens=4096
-            )
+            # this loop may call the LLM multiple times
+            cycle_left = 2 # limit the number of cycles
 
-            # process the response all we can deal with now is a list of function calls
-            # process the response all we can deal with now is a list of function calls
-            response_message = response.choices[0].message
-            print("response_message = ", response_message)
-            tool_calls = response_message.tool_calls
-            if tool_calls:
-                # messages.append(response_message)
-                print("tool_calls length = ", len(tool_calls))
-                print("tool_calls = ", tool_calls)
-                for tool_call in tool_calls:
-                    print("tool_calls length in loop = ", len(tool_calls))
-                    print("tool_calls in loop = ", tool_calls)
-                    print("tool_call = ", tool_call)
-                    function_name = tool_call.function.name
-                    function_to_call = self.available_functions[function_name]
-                    function_args = json.loads(tool_call.function.arguments)
+            while cycle_left > 0:
+                cycle_left -= 1
+                need_another_turn = False
+                # print("messages", messages)
+                # pretty_print(messages)
+                # print("tools", tools)
+                # pretty_print(tools)
+                # call the LLM
+                response = client.chat.completions.create(  # <------ call the LLM
+                    model=MODEL,
+                    messages=messages,
+                    tools=tools,
+                    tool_choice="auto",
+                    max_tokens=4096
+                )
 
-                    # for testiing get a list of the arguments the function takes
-                    args = function_to_call.__code__.co_varnames
-                    print("args = ", args)
+                # process the response all we can deal with now is a list of function calls
+                response_message = response.choices[0].message
+                print("response_message = ", response_message)
+                tool_calls = response_message.tool_calls
+                if tool_calls:
+                    messages.append(response_message)
 
-                    function_response = function_to_call(**function_args)
+                    print("tool_calls length = ", len(tool_calls))
+                    print("tool_calls = ", tool_calls)
 
-                    print("function_response = ", function_response)
-                    return ""
+                    for tool_call in tool_calls:
+                        function_name = tool_call.function.name
+                        function_to_call = self.available_functions[function_name]
+                        function_args = json.loads(tool_call.function.arguments)
+
+                        # for testiing get a list of the arguments the function takes
+                        args = function_to_call.__code__.co_varnames
+                        print("args = ", args)
+
+                        function_response = function_to_call(**function_args)
+                        print("function_response = ", function_response)
+
+                        output, flag = function_response
+                        if flag:
+                            need_another_turn = True
+
+                        if function_response:   # if the function returns a message
+                            messages.append(
+                                {
+                                    "tool_call_id": tool_call.id,
+                                    "role": "tool",
+                                    "name": function_name,
+                                    "content": output,
+                                }
+                            )
+                    if not need_another_turn:
+                        return ""
                 else:
                     return response_message.content
 

@@ -2,6 +2,8 @@
 
 from tool_box import Tool_Box
 
+from typing import Tuple
+
 import agent_core as AC
 import GUI_4 as GUI
 import GUI_stub_wrapper as GUI_Offline
@@ -12,11 +14,13 @@ def load_tools(gui) -> Tool_Box:
     out = Tool_Box()
 
     # add the tools here
-    def set_button_color(button_index: int, color_name: str) -> str:
+    #def set_button_color(button_index: int, color_name: str) -> str
+    # returns a string and a bool to indicate that more actions are needed
+    def set_button_color(button_index: int, color_name: str) -> Tuple[str, bool]:
         """Set the background color of a button."""
         gui.set_button_color(button_index, color_name)
         out = f"Set button {button_index} to {color_name}"
-        return out
+        return out, False
 
     # todo we could use something to make this easier
     example = [
@@ -59,6 +63,25 @@ def load_tools(gui) -> Tool_Box:
     out.add_tool_mandatory_args(tool=set_button_color, description=description, parameters=parameters, example=example)
 
     # ------------------------------------------------------------------------------
+    # add the get_button_color tool
+    def get_button_color(button_index: int) -> Tuple[str, bool]:
+        """Get the background color of a button."""
+        out = gui.get_button_color(button_index)
+        return out, True
+
+    example = None
+
+    description = "Gets the color of a button"
+    parameters = {
+        "button_index": {
+            "type": "integer",
+            "description": "The index of the button to get the color of. "
+                           "Buttons are numbered starting from 0 up to n - 1.",
+        },
+    }
+
+    out.add_tool_mandatory_args(tool=get_button_color, description=description, parameters=parameters, example=example)
+
     # more tools go here
 
     return out
@@ -86,7 +109,7 @@ def main():
     # for offline testing
     gui = GUI_Offline.Window("window_name")
     mmui = Agent(gui)
-    OT.simple_dectic_test(mmui)
+    OT.read_button_color(mmui)
     # OT.simple_description_test(mmui)
     # OT.simple_question_test(mmui)
 
