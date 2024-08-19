@@ -111,7 +111,7 @@ def main():
     gui = GUI_Offline.Window("window_name")
     mmui = Agent(gui)
     mmui.reset()
-    OT.read_button_color(mmui)
+    #OT.read_button_color(mmui)
     # OT.simple_description_test(mmui)
     # OT.simple_question_test(mmui)
     OLQT.run_offline_tests(mmui)

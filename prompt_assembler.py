@@ -14,10 +14,10 @@ it will return something like 'Set button 1 to red'.
 The user may also ask a question that does not entail making a function call.
 When asked a question answer with a brief response unless the user asks for you to provide longer responses."""
 
+from gesture_manager import Gesture_Manager
 
 def pretty_print(obj: Any) -> None:
     print(json.dumps(obj, indent=4))
-
 
 class Prompt_Assembler:
     def __init__(self, tool_box, primary_instructions = None):
@@ -26,7 +26,7 @@ class Prompt_Assembler:
             self.primary_instructions = defalut_primary_instructions
         else:
             self.primary_instructions = primary_instructions
-    def compute_prompt(self, command :str, gestures :str) -> list:
+    def compute_prompt(self, command :str, gesture_manager :Gesture_Manager) -> list:
         prompt = [{
             "role": "assistant",
             "content": self.primary_instructions
@@ -43,8 +43,10 @@ class Prompt_Assembler:
 
         # TODO add history here
         c_and_g = f"{command} " # we want to make a copy of the command
-        if gestures:
-            c_and_g += ". " + gestures
+        gesture_description = gesture_manager.get_description()
+        if gesture_description:
+            c_and_g += ". " + gesture_description
+
         messages =[{"role": "user", "content": c_and_g}]
 
         print("messages", messages)
@@ -56,4 +58,3 @@ class Prompt_Assembler:
         pretty_print(prompt)
 
         return prompt
-

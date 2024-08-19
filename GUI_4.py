@@ -4,12 +4,12 @@ import tkinter as tk
 from deepgram_ASR import DeepgramTranscriber  # Assume this is your transcriber file
 from command_buffer import Command_Buffer
 from back_end import Back_End
-
-
+from gesture_manager import Gesture_Manager
 class Window(Back_End):
+
     def __init__(self, title="GUI 4", transcriber=None, number_of_buttons=3):
         super().__init__(number_of_buttons=number_of_buttons)
-        self.gestures = ""
+        self.gesture_manager = Gesture_Manager()
 
         self.root = tk.Tk()
         self.root.title(title)
@@ -136,8 +136,8 @@ class Window(Back_End):
     # widget callbacks ------------------------------
 
     def take_action(self, command):
-        self.run_callback_function(command, self.gestures)
-        self.gestures = ""
+        self.run_callback_function(command, self.gesture_manager)
+        self.gesture_manager.reset()
         #if self.todo != None:
         #    self.set_button_color(self.todo[0], self.todo[1])
         print("todo list size ", len(self.delayed_action))
@@ -151,9 +151,7 @@ class Window(Back_End):
         self.take_action(command)
 
     def button_clicked(self, button_index):
-        description = f"Button {button_index} was indicated"
-        self.gestures += description
-        print(description)
+        self.gesture_manager.button_clicked(button_index)
 
     def get_button_color(self, button_index):
         print("Getting button color", button_index)
