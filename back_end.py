@@ -16,6 +16,9 @@ class Back_End:
     def get_all_colors_as_string(self):
         return " ".join(self.color)
 
+    def reset(self):
+        self.color = ["white"] * len(self.color)
+
 # bug when this is used it does not work correctly
     # def get_tools(self):
     #     tools = []

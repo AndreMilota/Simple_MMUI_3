@@ -44,7 +44,7 @@ class Prompt_Assembler:
         # TODO add history here
         c_and_g = f"{command} " # we want to make a copy of the command
         if gestures:
-            c_and_g += gestures
+            c_and_g += ". " + gestures
         messages =[{"role": "user", "content": c_and_g}]
 
         print("messages", messages)

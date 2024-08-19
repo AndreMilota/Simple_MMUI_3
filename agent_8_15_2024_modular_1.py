@@ -105,13 +105,17 @@ class Agent(Agent_Core):
     def reset(self):
         self.gui.reset()
 
+import offline_query_tests_3 as OLQT
 def main():
     # for offline testing
     gui = GUI_Offline.Window("window_name")
     mmui = Agent(gui)
+    mmui.reset()
     OT.read_button_color(mmui)
     # OT.simple_description_test(mmui)
     # OT.simple_question_test(mmui)
+    OLQT.run_offline_tests(mmui)
+
 
 if __name__ == "__main__":
     main()
