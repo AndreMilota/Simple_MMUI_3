@@ -3,14 +3,14 @@
 # An external file will have to connect it to the application by loading tools into the toolbox and potentially
 # setting other variables such as the core prompt
 
-
+import pprint
 from prompt_assembler import Prompt_Assembler
 from tool_box import Tool_Box
 import os
 import json
 from groq import Groq
 from typing import Callable, Any
-
+from test_utills import pretty_print
 
 # load the key for the Groq API
 groq_key = os.environ.get('GROQ_KEY')
@@ -19,8 +19,8 @@ MODEL = 'llama3-groq-70b-8192-tool-use-preview'
 client = Groq(api_key=groq_key, )
 
 # todo move pretty_print to a test file
-def pretty_print(obj: Any) -> None:
-    print(json.dumps(obj, indent=4))
+# def pretty_print(obj: Any) -> None:
+#     print(json.dumps(obj, indent=4))
 class Agent_Core():
     def __init__(self, tool_box: Tool_Box, gui, core_prompt = None):
         self.tool_box = tool_box
@@ -29,6 +29,7 @@ class Agent_Core():
         self.gui = gui
         def callback_function(command, gestures):
             messages = self.prompt_assembler.compute_prompt(command, gestures)
+
             tools = self.tool_box.get_tools(command)
 
             # this loop may call the LLM multiple times
@@ -37,8 +38,8 @@ class Agent_Core():
             while cycle_left > 0:
                 cycle_left -= 1
                 need_another_turn = False
-                # print("messages", messages)
-                # pretty_print(messages)
+                print("messages")
+                print(messages)
                 # print("tools", tools)
                 # pretty_print(tools)
                 # call the LLM
@@ -52,11 +53,15 @@ class Agent_Core():
 
                 # process the response all we can deal with now is a list of function calls
                 response_message = response.choices[0].message
-                print("response_message = ", response_message)
+                print("response_message")
+                pp = pprint.PrettyPrinter(indent=4)
+                pp.pprint(response_message)
+                #pretty_print(response_message)
                 tool_calls = response_message.tool_calls
                 if tool_calls:
                     messages.append(response_message)
-
+                    print("messages")
+                    pretty_print(messages)
                     print("tool_calls length = ", len(tool_calls))
                     print("tool_calls = ", tool_calls)
 
@@ -76,15 +81,18 @@ class Agent_Core():
                         if flag:
                             need_another_turn = True
 
-                        if function_response:   # if the function returns a message
-                            messages.append(
-                                {
-                                    "tool_call_id": tool_call.id,
-                                    "role": "tool",
-                                    "name": function_name,
-                                    "content": output,
-                                }
-                            )
+                        # if function_response:   # if the function returns a message
+                        #     messages.append(
+                        #         {
+                        #             "tool_call_id": tool_call.id,
+                        #             "role": "tool",
+                        #             "name": function_name,
+                        #             "content": output,
+                        #         }
+                        #     )
+                        print("messages")
+                        print(messages)
+
                     if not need_another_turn:
                         return ""
                 else:
@@ -101,4 +109,3 @@ class Agent_Core():
         def run(self):
             # self.gui.set_run_callback(self.callback_function) this was set in the constructor
             self.gui.run()
-

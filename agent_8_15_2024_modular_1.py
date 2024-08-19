@@ -9,6 +9,8 @@ import GUI_4 as GUI
 import GUI_stub_wrapper as GUI_Offline
 import offline_tests_2 as OT
 from agent_core import Agent_Core
+from gesture_manager import Gesture_Manager
+
 def load_tools(gui) -> Tool_Box:
 
     out = Tool_Box()
@@ -27,7 +29,7 @@ def load_tools(gui) -> Tool_Box:
         # give an example of a command
         {
             "role": "user",
-            "content": "Make this white. Button 1 was indicated"
+            "content": "Make this white. Button 1 was indicated" # todo update this to use the gesture manager
         },
         {
             "role": "assistant",
@@ -61,6 +63,51 @@ def load_tools(gui) -> Tool_Box:
     }
 
     out.add_tool_mandatory_args(tool=set_button_color, description=description, parameters=parameters, example=example)
+
+    # ------------------------------------------------------------------------------
+    # add an example of copying a property from one object to  another
+    # gm = Gesture_Manager()
+    # gm.button_clicked(gui, 1)
+    # gm.button_clicked(gui, 2)
+    # key_content = "copy the color from here to here" + gm.get_description()
+    # example_2 = [
+    #     # give an example of a command
+    #     {
+    #         "role": "user",
+    #         "content": "make button two green"
+    #     },
+    #     {
+    #         "role": "assistant",
+    #         'tool_calls': [
+    #             {
+    #                 'id': 'call_ywm5',
+    #                 'function': {
+    #                     'name': 'set_button_color',
+    #                     'arguments': '{"button_index": 1, "color_name": "green"}'
+    #                 },
+    #                 'type': 'function'
+    #             }
+    #         ]
+    #     },
+    #     {
+    #         "role": "user",
+    #         "content": key_content
+    #     },
+    #     {
+    #         "role": "assistant",
+    #         'tool_calls': [
+    #             {
+    #                 'id': 'call_ywm5',
+    #                 'function': {
+    #                     'name': 'set_button_color',
+    #                     'arguments': '{"button_index": 1, "color_name": "green"}'
+    #
+    #                 },
+    #                 'type': 'function'
+    #             }
+    #         ]
+    #     },
+    # ]
 
     # ------------------------------------------------------------------------------
     # add the get_button_color tool
@@ -111,7 +158,8 @@ def main():
     gui = GUI_Offline.Window("window_name")
     mmui = Agent(gui)
     mmui.reset()
-    #OT.read_button_color(mmui)
+    OLQT.deictic_query_test(mmui)
+    OT.simple_deictic_test(mmui)
     # OT.simple_description_test(mmui)
     # OT.simple_question_test(mmui)
     OLQT.run_offline_tests(mmui)
