@@ -60,10 +60,6 @@ class Agent_Core():
                 tool_calls = response_message.tool_calls
                 if tool_calls:
                     messages.append(response_message)
-                    print("messages")
-                    pretty_print(messages)
-                    print("tool_calls length = ", len(tool_calls))
-                    print("tool_calls = ", tool_calls)
 
                     for tool_call in tool_calls:
                         function_name = tool_call.function.name
@@ -81,15 +77,15 @@ class Agent_Core():
                         if flag:
                             need_another_turn = True
 
-                        # if function_response:   # if the function returns a message
-                        #     messages.append(
-                        #         {
-                        #             "tool_call_id": tool_call.id,
-                        #             "role": "tool",
-                        #             "name": function_name,
-                        #             "content": output,
-                        #         }
-                        #     )
+                        if function_response:   # if the function returns a message
+                            messages.append(
+                                {
+                                    "tool_call_id": tool_call.id,
+                                    "role": "tool",
+                                    "name": function_name,
+                                    "content": output,
+                                }
+                            )
                         print("messages")
                         print(messages)
 
