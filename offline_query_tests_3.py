@@ -50,13 +50,13 @@ def deictic_copy_color_1(agent):
     gui.take_action("make button two red")
     c1 = gui.get_button_color(2)
     if not c1 == "red":                   # 2 is red
-        print("copy_color failed")
+        print("deictic_copy_color_1 failed")
         return False
 
     gui.take_action("make button one blue")
     c1 = gui.get_button_color(1)
     if not c1 == "blue":                 # 1 is blue
-        print("copy_color failed")
+        print("deictic_copy_color_1 failed")
         return False
 
     gui.click_button(2)
@@ -65,10 +65,10 @@ def deictic_copy_color_1(agent):
     c1 = gui.get_button_color(1)
     c2 = gui.get_button_color(2)
     if not c1 == c2:
-        print("copy_color failed")
+        print("deictic_copy_color_1 failed")
         return False
     if not c1 == "blue":
-        print("copy_color failed")
+        print("deictic_copy_color_1 failed")
         return False
     print("deictic_copy_color_1 passed")
     return True
@@ -78,13 +78,13 @@ def double_deictic_copy_color_1(agent):
     gui.take_action("make button two red") # 2 is red
     c2 = gui.get_button_color(2)
     if not c2 == "red":
-        print("copy_color failed")
+        print("double_deictic_copy_color_1 failed")
         return False
 
     gui.take_action("make button one blue") # 1 is blue
     c1 = gui.get_button_color(1)
     if not c1 == "blue":
-        print("copy_color failed")
+        print("double_deictic_copy_color_1 failed")
         return False
 
     gui.click_button(2)
@@ -94,10 +94,10 @@ def double_deictic_copy_color_1(agent):
     c_b1_2 = gui.get_button_color(1)
     c_b2_2 = gui.get_button_color(2)
     if not c_b1_2 == c_b2_2:
-        print("copy_color failed")
+        print("double_deictic_copy_color_1 failed")
         return False
     if not c_b2_2 == "blue":
-        print("copy_color failed")
+        print("double_deictic_copy_color_1 failed")
         return False
     print("double_deictic_copy_color_1 passed")
     return True
@@ -107,13 +107,13 @@ def double_deictic_copy_color_2(agent):
     gui.take_action("make button two red") # 2 is red
     c1 = gui.get_button_color(2)
     if not c1 == "red":
-        print("copy_color failed")
+        print("double_deictic_copy_color_2 failed")
         return False
 
     gui.take_action("make button one blue") # 1 is blue
     c1 = gui.get_button_color(2)
     if not c1 == "blue":
-        print("copy_color failed")
+        print("double_deictic_copy_color_2 failed")
         return False
 
     gui.click_button(1)
@@ -123,10 +123,10 @@ def double_deictic_copy_color_2(agent):
     c1 = gui.get_button_color(1)
     c2 = gui.get_button_color(2)
     if not c1 == c2:
-        print("copy_color failed")
+        print("double_deictic_copy_color_2 failed")
         return False
     if not c1 == "blue":
-        print("copy_color failed")
+        print("double_deictic_copy_color_2 failed")
         return False
     print("double_deictic_copy_color_2 passed")
     return True

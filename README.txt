@@ -7,5 +7,6 @@ This branch state_query_tool is based on modular_groq_agent branch
 Note a bug was found in Tool_Box.add_tool_mandatory_args
 When t_description["function"]["description"] is set it was hardwired and as a result it only worked in that branch where there was just one tool
 
-
-
+9-6-2024 Andre
+In this Branch we are going to try to use Chain of Thought to deal with multiple gestures. this may require dealing with
+responses that contain both text and function calls.

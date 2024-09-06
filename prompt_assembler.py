@@ -31,12 +31,12 @@ class Prompt_Assembler:
             "role": "assistant",
             "content": self.primary_instructions
         }]
-        tool_examples = self.tool_box.get_tool_examples(command)
-
-        print("tool_examples", tool_examples)
-        pretty_print(tool_examples)
-
-        prompt += tool_examples
+        # tool_examples = self.tool_box.get_tool_examples(command)
+        #
+        # print("tool_examples", tool_examples)
+        # pretty_print(tool_examples)
+        #
+        # prompt += tool_examples
 
         print("prompt", prompt)
         pretty_print(prompt)
