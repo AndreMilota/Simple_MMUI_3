@@ -7,10 +7,14 @@ from typing import Any
 
 defalut_primary_instructions = """You are a multimodal agent for controlling a simple app.
 You will be given the text of the commands the user issues and if they make any gestures you will be given a description of them.
+You should look at the gesture descriptions to resolve pronouns in the text of the commands.
 The application you are controlling has {number_of_buttons} buttons.
-You can set there by calling the function called set_button_color.
-It takes two arguments, the index of the button and the color you want to set it to.
+You can set it by calling the function called set_button_color.
+It takes two arguments, the index of the button and the name of the color you want to set it to.
+The color must be specified as one of the standard x11 colors or RGB hex.
 it will return something like 'Set button 1 to red'.
+You can read the color of a button by calling the function get_button_color.
+It takes one argument, the index of the button you want to read.
 The user may also ask a question that does not entail making a function call.
 When asked a question answer with a brief response unless the user asks for you to provide longer responses."""
 
@@ -20,10 +24,12 @@ def pretty_print(obj: Any) -> None:
     print(json.dumps(obj, indent=4))
 
 class Prompt_Assembler:
-    def __init__(self, tool_box, primary_instructions = None):
+    def __init__(self, tool_box, number_of_buttons = 3, primary_instructions = None):
         self.tool_box = tool_box
         if not primary_instructions:
             self.primary_instructions = defalut_primary_instructions
+            # put in the number of buttons
+            self.primary_instructions = self.primary_instructions.format(number_of_buttons=number_of_buttons)
         else:
             self.primary_instructions = primary_instructions
     def compute_prompt(self, command :str, gesture_manager :Gesture_Manager) -> list:

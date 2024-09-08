@@ -13,7 +13,7 @@ def deictic_query_test_2(agent):
     gui.take_action("make button two red")
     c = gui.get_button_color(2)
     if not c == "red":
-        print("simple_description_test failed")
+        print("deictic_query_test_2 failed")
         return False
     gui.click_button(2)
     gui.take_action("what color is this")  # users input
@@ -131,25 +131,26 @@ def double_deictic_copy_color_2(agent):
     print("double_deictic_copy_color_2 passed")
     return True
 def run_offline_tests(agent):
-    # agent.reset()
-    # deictic_query_test(agent)
-    #
-    # agent.reset()
-    # deictic_query_test_2(agent)
-    #
-    # agent.reset()
-    # read_button_color(agent)
+    for i in range(6):
+        agent.reset()
+        deictic_query_test(agent)
 
-    # agent.reset()
-    #copy_color(agent)
+        agent.reset()
+        deictic_query_test_2(agent)
+
+        agent.reset()
+        read_button_color(agent)
+
+        agent.reset()
+        copy_color(agent)
 
     # agent.reset()
     # deictic_copy_color_1(agent)
-
-    agent.reset()
-    double_deictic_copy_color_1(agent)
-
-    agent.reset()
-    double_deictic_copy_color_2(agent)
-
-    agent.reset()
+    #
+    # agent.reset()
+    # double_deictic_copy_color_1(agent)
+    #
+    # agent.reset()
+    # double_deictic_copy_color_2(agent)
+    #
+    # agent.reset()

@@ -24,7 +24,8 @@ client = Groq(api_key=groq_key, )
 class Agent_Core():
     def __init__(self, tool_box: Tool_Box, gui, core_prompt = None):
         self.tool_box = tool_box
-        self.prompt_assembler = Prompt_Assembler(tool_box, core_prompt)
+        number_of_buttons = gui.get_number_of_buttons()
+        self.prompt_assembler = Prompt_Assembler(tool_box, number_of_buttons, core_prompt)
         self.available_functions = tool_box.available_functions   # we just link to it without a function as this will remain the same for all commands
         self.gui = gui
         def callback_function(command, gestures):
@@ -48,7 +49,8 @@ class Agent_Core():
                     messages=messages,
                     tools=tools,
                     tool_choice="auto",
-                    max_tokens=4096
+                    max_tokens=4096,
+                    temperature = 0.0
                 )
 
                 # process the response all we can deal with now is a list of function calls
