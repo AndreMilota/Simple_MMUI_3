@@ -36,20 +36,22 @@ def llm_based_assertion(characterization :str, text :str)-> bool:
     out = response_message.content
     return out == "True"
 
-print("hello world")
+def main():
 
+    # test our function
+    characterization = "it mentions the color red"
+    text = "button 1 is red"
+    #assert llm_based_assertion(characterization, text) == True
+    print("test 1 passed")
 
-# test our function
-characterization = "it mentions the color red"
-text = "button 1 is red"
-#assert llm_based_assertion(characterization, text) == True
-print("test 1 passed")
+    text = "button 1 is green"
+    #assert llm_based_assertion(characterization, text) == False
+    print("test 2 passed")
 
-text = "button 1 is green"
-#assert llm_based_assertion(characterization, text) == False
-print("test 2 passed")
+    text = "the result is red"
+    #assert llm_based_assertion(characterization, text) == True
+    print("test 3 passed")
 
-text = "the result is red"
-#assert llm_based_assertion(characterization, text) == True
-print("test 3 passed")
-
+# run the main function
+if __name__ == "__main__":
+    main()

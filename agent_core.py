@@ -28,6 +28,7 @@ class Agent_Core():
         self.prompt_assembler = Prompt_Assembler(tool_box, number_of_buttons, core_prompt)
         self.available_functions = tool_box.available_functions   # we just link to it without a function as this will remain the same for all commands
         self.gui = gui
+        self.responce = None
         def callback_function(command, gestures):
             messages = self.prompt_assembler.compute_prompt(command, gestures)
 
@@ -94,6 +95,7 @@ class Agent_Core():
                     if not need_another_turn:
                         return ""
                 else:
+                    self.responce = response_message.content
                     return response_message.content
 
         gui.set_run_callback(callback_function)
@@ -107,3 +109,6 @@ class Agent_Core():
         def run(self):
             # self.gui.set_run_callback(self.callback_function) this was set in the constructor
             self.gui.run()
+
+        def get_response(self):
+            return self.responce

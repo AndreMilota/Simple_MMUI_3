@@ -1,16 +1,13 @@
 # This module connects the agent core with the application and starts everything running.
 
 from tool_box import Tool_Box
-
 from typing import Tuple
-
 import agent_core as AC
 import GUI_4 as GUI
 import GUI_stub_wrapper as GUI_Offline
 import offline_tests_2 as OT
 from agent_core import Agent_Core
 from gesture_manager import Gesture_Manager
-
 
 def load_tools(gui) -> Tool_Box:
     out = Tool_Box()

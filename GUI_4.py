@@ -136,7 +136,7 @@ class Window(Back_End):
     # widget callbacks ------------------------------
 
     def take_action(self, command):
-        self.run_callback_function(command, self.gesture_manager)
+        result = self.run_callback_function(command, self.gesture_manager)
         self.gesture_manager.reset()
         #if self.todo != None:
         #    self.set_button_color(self.todo[0], self.todo[1])
@@ -144,11 +144,12 @@ class Window(Back_End):
         for command in self.delayed_action:
             command()
         self.delayed_action = []  # clear the todo list
+        return result
 
     def run_callback(self):
         command = self.command_entry.get("1.0", "end-1c")
         print(f"Running command: {command}")
-        self.take_action(command)
+        return self.take_action(command)
 
     def button_clicked(self, button_index):
         self.gesture_manager.button_clicked(button_index)

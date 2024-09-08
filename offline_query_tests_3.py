@@ -1,12 +1,15 @@
 # this version of the offline tests takes the agent as an argument, so you can run offline tests from the agent file
 # older versions of the agent may not have all the functions this file needs
 
+import test_utills
+
+
 def deictic_query_test(agent):
     gui = agent.get_gui()
     gui.click_button(2)
-    gui.take_action("what color is this")  # users input
-    print("IT SHOULD BE WHITE")
-    return True
+    r = gui.take_action("what color is this")  # users input
+    r2 = test_utills.llm_based_assertion("it should be white", r)
+    return r2
 
 def deictic_query_test_2(agent):
     gui = agent.get_gui()
@@ -16,15 +19,16 @@ def deictic_query_test_2(agent):
         print("deictic_query_test_2 failed")
         return False
     gui.click_button(2)
-    gui.take_action("what color is this")  # users input
-    print("IT SHOULD BE RED")
-    return True
+    r = gui.take_action("what color is this")  # users input
+    r2 = test_utills.llm_based_assertion("it should be red", r)
+    return r2
 
 def read_button_color(agent):
     gui = agent.get_gui()
-    gui.take_action("what is the color of button 2")
-    print("IT SHOULD BE WHITE")
-    return True
+    r = gui.take_action("what is the color of button 2")
+    r2 = test_utills.llm_based_assertion("it should be white", r)
+    return r2
+
 def copy_color(agent):
     gui = agent.get_gui()
     gui.take_action("make button two red")
@@ -130,27 +134,48 @@ def double_deictic_copy_color_2(agent):
         return False
     print("double_deictic_copy_color_2 passed")
     return True
+
 def run_offline_tests(agent):
-    for i in range(6):
-        agent.reset()
-        deictic_query_test(agent)
-
-        agent.reset()
-        deictic_query_test_2(agent)
-
-        agent.reset()
-        read_button_color(agent)
-
-        agent.reset()
-        copy_color(agent)
-
-    # agent.reset()
-    # deictic_copy_color_1(agent)
+    # for i in range(6):
+    #     agent.reset()
+    #     r = deictic_query_test(agent)
+    #     if not r:
+    #         print("deictic_query_test failed")
+    #         return False
     #
-    # agent.reset()
-    # double_deictic_copy_color_1(agent)
+    #     agent.reset()
+    #     r = deictic_query_test_2(agent)
+    #     if not r:
+    #         print("deictic_query_test_2 failed")
+    #         return False
     #
-    # agent.reset()
-    # double_deictic_copy_color_2(agent)
+    #     agent.reset()
+    #     r = read_button_color(agent)
+    #     if not r:
+    #         print("read_button_color failed")
+    #         return False
     #
-    # agent.reset()
+    #     agent.reset()
+    #     r = copy_color(agent)
+    #     if not r:
+    #         print("copy_color failed")
+    #         return False
+
+    agent.reset()
+    r = deictic_copy_color_1(agent)
+    if not r:
+        return False
+
+    agent.reset()
+    r = double_deictic_copy_color_1(agent)
+    if not r:
+        return False
+
+    agent.reset()
+    r = double_deictic_copy_color_2(agent)
+    if not r:
+        return False
+
+    agent.reset()
+
+    print("all tests passed")
