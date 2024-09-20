@@ -40,11 +40,11 @@ class Tool_Box:
 
         self.tool_descriptions += [t_description]
         # pritty print the tool_descriptions
-        print("Tool tool_descriptions:")
-        pretty_print(self.tool_descriptions)
+        # print("Tool tool_descriptions:")
+        # pretty_print(self.tool_descriptions)
 
-        for element in self.tool_descriptions:
-            print(element, "\n")
+        # for element in self.tool_descriptions:
+        #     print(element, "\n")
         # TODO add something so we can pull the description out of the function using the inspect module
 
         if example:

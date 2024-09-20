@@ -57,9 +57,8 @@ class Agent_Core():
                 # process the response all we can deal with now is a list of function calls
                 response_message = response.choices[0].message
                 print("response_message")
-                pp = pprint.PrettyPrinter(indent=4)
-                pp.pprint(response_message)
-                #pretty_print(response_message)
+                print(response_message)
+
                 tool_calls = response_message.tool_calls
                 if tool_calls:
                     messages.append(response_message)

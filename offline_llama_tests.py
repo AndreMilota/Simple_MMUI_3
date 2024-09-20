@@ -56,8 +56,7 @@ class TestBtnAgent(unittest.TestCase):
         # load the key for the Groq API
         load_dotenv()
         groq_key = os.getenv("GROQ_API_KEY")
-        self.__model__ = "llama3-groq-70b-8192-tool-use-preview"
-        # get the key and create a client
+        # get the key and create a        self.__model__ = "llama3-groq-70b-8192-tool-use-preview" client
         self.__client__ = Groq(api_key=groq_key)
         self.__gui__ = GUIOffline()
 
