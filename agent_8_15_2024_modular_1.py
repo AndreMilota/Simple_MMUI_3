@@ -177,13 +177,18 @@ class Agent(Agent_Core):
     def reset(self):
         self.gui.reset()
 
+def run_MMUI():
+    gui = GUI.Window()
+    agent = Agent(gui)
+    gui.run()
+
 
 import offline_query_tests_3 as OLQT
 
 
 def main():
     # for offline testing
-    gui = GUI_Offline.Window("window_name")
+    gui = GUI_Offline.Window("agent_8_15_2024_modular_1")
     mmui = Agent(gui)
     mmui.reset()
     #OLQT.deictic_query_test(mmui)

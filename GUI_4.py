@@ -178,7 +178,7 @@ class Window(Back_End):
 def main():
     # create the window
     transcriber = DeepgramTranscriber()
-    gui = Window("GUI_3", transcriber=transcriber)
+    gui = Window("GUI_4", transcriber=transcriber)
     gui.run()
 
 if __name__ == "__main__":

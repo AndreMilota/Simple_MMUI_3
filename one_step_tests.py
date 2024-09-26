@@ -66,6 +66,34 @@ def simple_tests(singe_step_call_tester):
     if not r2:
         print("simple_tests: failed " + command)
         return False
+    # test 6
+
+    singe_step_call_tester.reset_ground_truth()
+    command = "make button 2 and button 3 green"
+    singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 2, "color_name": "green"})
+    singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 3, "color_name": "green"})
+    r2 = singe_step_call_tester.test(command)
+    if not r2:
+        print("simple_tests: failed " + command)
+        return False
+
+    singe_step_call_tester.reset_ground_truth()
+    command = "What color is the sky during the day"
+    singe_step_call_tester.add_non_call_condition("'Blue' is in the text")
+    r2 = singe_step_call_tester.test(command)
+    if not r2:
+        print("simple_tests: failed " + command)
+        return False
+
+    singe_step_call_tester.reset_ground_truth()
+    command = "make button 2 and button 3 the same color as button 1"
+    singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 1})
+    singe_step_call_tester.add_bad_call("set_button_color")
+    r2 = singe_step_call_tester.test(command)
+    if not r2:
+        print("simple_tests: failed " + command)
+        return False
+
 
     return True
 
@@ -106,7 +134,8 @@ def main():
     If a step requires information that is not immediately available, ask for it explicitly. 
     For example, if asked to 'copy the color from button 1 to button 0', 
     first ask for the color of button 1, then proceed to set the color of button 0."""
-
+    instructions += " There are a total of 3 buttons with indexes starting at 0."
+    instructions += " Sometimes the user may ask a question that has nothing to with controlling an application. If you know the answer just answer it."
     singe_step_call_tester.set_instructions(instructions)
 
     # command = "make button 1 blue"

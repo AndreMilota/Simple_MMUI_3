@@ -44,6 +44,7 @@ class Singe_Step_Call_Tester:
         self.bad_calls = set()
         self.bad_call_functions = set()
         self.instructions = None
+        self.non_call_conditions = []
 
     def convert_args_to_strig(self, function_name : str, args :dict):
         return function_name + ", " + str(sorted(args.items()))
@@ -59,6 +60,9 @@ class Singe_Step_Call_Tester:
             bad_call = self.convert_args_to_strig(function_name, arguments)
             self.bad_calls.add(bad_call)
 
+    def add_non_call_condition(self, condition :str):
+        self.non_call_conditions.append(condition)
+
     def set_instructions(self, instructions :str):
         self.instructions = instructions
 
@@ -66,6 +70,8 @@ class Singe_Step_Call_Tester:
         self.needed_calls = set()
         self.bad_calls = set()
         self.bad_call_functions = set()
+        self.non_call_conditions = []
+
 
     def test(self, input):
         prompt = [{
@@ -115,6 +121,12 @@ class Singe_Step_Call_Tester:
                     return False
                 else:
                     extra_calls += [call]
+        else:
+            for condition in self.non_call_conditions:
+                print("response " + response_message.content)
+                if not llm_based_assertion(condition, response_message.content):
+                    print("failed non call condition " + condition)
+                    return False
 
         # check the length of the good calls
         needed_calls = len(self.needed_calls)

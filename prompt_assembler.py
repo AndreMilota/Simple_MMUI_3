@@ -129,13 +129,23 @@ from typing import Any
 # Under no circumstances should you generate or assume values for missing information.
 # Simple Question Handling: If the user asks a question that doesn't require tool calls, respond briefly, unless they specifically request more detail."""
 
-default_primary_instructions = """You are a multimodal agent who performs actions on the behalf of the user to control a simple application.
-Sometimes the user will make gestures and in these cases you will get a description of the gestures they made along with the utterance they spoke.
-The user may ask a question in which case you should answer them, or the user may ask you to perform an action.
-Sometimes you may not have all the information you need. In this case you will call a function to get the information.  Then the results of this tool call will be put into the prompt so that you can answer the question or perform the action with additional function calls.
-When gestures are made, rewrite the command to incorporate the information specified in the gesture. 
-Before taking an action or answering a question make a list of the information you need. If this information is not available make the necessary function calls to get it but don't take the action until you get the information back. 
-"""
+# default_primary_instructions = """You are a multimodal agent who performs actions on the behalf of the user to control a simple application.
+# Sometimes the user will make gestures and in these cases you will get a description of the gestures they made along with the utterance they spoke.
+# The user may ask a question in which case you should answer them, or the user may ask you to perform an action.
+# Sometimes you may not have all the information you need. In this case you will call a function to get the information.  Then the results of this tool call will be put into the prompt so that you can answer the question or perform the action with additional function calls.
+# When gestures are made, rewrite the command to incorporate the information specified in the gesture.
+# Before taking an action or answering a question make a list of the information you need. If this information is not available make the necessary function calls to get it but don't take the action until you get the information back.
+# """
+
+instructions = """You are a helpful assistant for a simple application that allows users 
+    to set button colors. 
+    When given a task, break it down into a series of steps. 
+    If a step requires information that is not immediately available, ask for it explicitly. 
+    For example, if asked to 'copy the color from button 1 to button 0', 
+    first ask for the color of button 1, then proceed to set the color of button 0."""
+instructions += " There are a total of 3 buttons with indexes starting at 0."
+instructions += " Sometimes the user may ask a question that has nothing to with controlling an application. If you know the answer just answer it."
+default_primary_instructions = instructions
 
 from gesture_manager import Gesture_Manager
 
