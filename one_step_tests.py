@@ -20,33 +20,33 @@ from tool_box import Tool_Box
 
 def simple_tests(singe_step_call_tester):
     singe_step_call_tester.reset_ground_truth()
-    # test 1
-    # command = "make button 1 blue"
-    # singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 1, "color_name": "blue"})
-    # r1 = singe_step_call_tester.test(command)
-    # if not r1:
-    #     print("simple_tests: failed 'make button 1 blue'")
-    #     return False
-    #
-    # # test 2
-    # singe_step_call_tester.reset_ground_truth()
-    # command = "what is the color of button 1"
-    # singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 1})
-    # r2 = singe_step_call_tester.test(command)
-    # if not r2:
-    #     print("simple_tests: failed: " + command)
-    #     return False
-    #
-    # # test 3
-    # singe_step_call_tester.reset_ground_truth()
-    # command = "copy the color from button 1 to button 0"
-    # singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 1})
-    # singe_step_call_tester.add_bad_call("set_button_color")
-    # r2 = singe_step_call_tester.test(command)
-    # if not r2:
-    #     print("simple_tests: failed " + command)
-    #     return False
-    #
+
+    command = "make button 1 blue"
+    singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 1, "color_name": "blue"})
+    r1 = singe_step_call_tester.test(command)
+    if not r1:
+        print("simple_tests: failed 'make button 1 blue'")
+        return False
+
+    # test 2
+    singe_step_call_tester.reset_ground_truth()
+    command = "what is the color of button 1"
+    singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 1})
+    r2 = singe_step_call_tester.test(command)
+    if not r2:
+        print("simple_tests: failed: " + command)
+        return False
+
+    # test 3
+    singe_step_call_tester.reset_ground_truth()
+    command = "copy the color from button 1 to button 0"
+    singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 1})
+    singe_step_call_tester.add_bad_call("set_button_color")
+    r2 = singe_step_call_tester.test(command)
+    if not r2:
+        print("simple_tests: failed " + command)
+        return False
+
     # test 4
     singe_step_call_tester.reset_ground_truth()
     command = "copy the color from button 1 to button 2"
@@ -57,61 +57,73 @@ def simple_tests(singe_step_call_tester):
         print("simple_tests: failed " + command)
         return False
 
-    #     # test 5
-    # singe_step_call_tester.reset_ground_truth()
-    # command = "make button 1 the same color as button 2"
-    # singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 2})
-    # singe_step_call_tester.add_bad_call("set_button_color")
-    # r2 = singe_step_call_tester.test(command)
-    # if not r2:
-    #     print("simple_tests: failed " + command)
-    #     return False
-    # # test 6
-    #
-    # singe_step_call_tester.reset_ground_truth()
-    # command = "make button 2 and button 3 green"
-    # singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 2, "color_name": "green"})
-    # singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 3, "color_name": "green"})
-    # r2 = singe_step_call_tester.test(command)
-    # if not r2:
-    #     print("simple_tests: failed " + command)
-    #     return False
-    #
-    # singe_step_call_tester.reset_ground_truth()
-    # command = "What color is the sky during the day"
-    # singe_step_call_tester.add_non_call_condition("'Blue' is in the text")
-    # r2 = singe_step_call_tester.test(command)
-    # if not r2:
-    #     print("simple_tests: failed " + command)
-    #     return False
-    #
-    # singe_step_call_tester.reset_ground_truth()
-    # command = "make button 2 and button 3 the same color as button 1"
-    # singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 1})
-    # singe_step_call_tester.add_bad_call("set_button_color")
-    # r2 = singe_step_call_tester.test(command)
-    # if not r2:
-    #     print("simple_tests: failed " + command)
-    #     return False
+        # test 5
+    singe_step_call_tester.reset_ground_truth()
+    command = "make button 1 the same color as button 2"
+    singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 2})
+    singe_step_call_tester.add_bad_call("set_button_color")
+    r2 = singe_step_call_tester.test(command)
+    if not r2:
+        print("simple_tests: failed " + command)
+        return False
+    # test 6
+
+    singe_step_call_tester.reset_ground_truth()
+    command = "make button 2 and button 3 green"
+    singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 2, "color_name": "green"})
+    singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 3, "color_name": "green"})
+    r2 = singe_step_call_tester.test(command)
+    if not r2:
+        print("simple_tests: failed " + command)
+        return False
+
+    singe_step_call_tester.reset_ground_truth()
+    command = "What color is the sky during the day"
+    singe_step_call_tester.add_non_call_condition("'Blue' is in the text")
+    r2 = singe_step_call_tester.test(command)
+    if not r2:
+        print("simple_tests: failed " + command)
+        return False
+
+    singe_step_call_tester.reset_ground_truth()
+    command = "make button 2 and button 3 the same color as button 1"
+    singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 1})
+    singe_step_call_tester.add_bad_call("set_button_color")
+    r2 = singe_step_call_tester.test(command)
+    if not r2:
+        print("simple_tests: failed " + command)
+        return False
     return True
 
 def deictic_tests(singe_step_call_tester):
-    # singe_step_call_tester.reset_ground_truth()
-    # command = "make this blue"
-    # singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 1, "color_name": "blue"})
-    # r1 = singe_step_call_tester.test(command, [1])
-    # if not r1:
-    #     print("deictic_tests: failed: " + command)
-    #     return False
-    #
-    # # test 2
-    # singe_step_call_tester.reset_ground_truth()
-    # command = "what is the color is this"
-    # singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 1})
-    # r2 = singe_step_call_tester.test(command, [1])
-    # if not r2:
-    #     print("deictic_tests: failed: " + command)
-    #     return False
+
+
+    singe_step_call_tester.reset_ground_truth()
+    command = "make this blue"
+    singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 1, "color_name": "blue"})
+    r1 = singe_step_call_tester.test(command, [1])
+    if not r1:
+        print("deictic_tests: failed: " + command)
+        return False
+
+    # test 2
+    singe_step_call_tester.reset_ground_truth()
+    command = "what is the color is this"
+    singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 1})
+    r2 = singe_step_call_tester.test(command, [1])
+    if not r2:
+        print("deictic_tests: failed: " + command)
+        return False
+
+    # test 2.5
+    singe_step_call_tester.reset_ground_truth()
+    command = "copy the color from button 1 to this button"
+    singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 1})
+    singe_step_call_tester.add_bad_call("set_button_color")
+    r2 = singe_step_call_tester.test(command, [2])
+    if not r2:
+        print("deictic_tests: failed " + command)
+        return False
 
     # test 3
     singe_step_call_tester.reset_ground_truth()
@@ -162,6 +174,35 @@ def deictic_tests(singe_step_call_tester):
         print("deictic_tests: failed " + command)
         return False
 
+    #this is not working
+    singe_step_call_tester.reset_ground_truth()
+    command = "make these 2 buttons the same color as this button"
+    singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 0})
+    singe_step_call_tester.add_bad_call("set_button_color")
+    r2 = singe_step_call_tester.test(command, [2, 1, 0])
+    if not r2:
+        print("deictic_tests: failed " + command)
+        return False
+
+    singe_step_call_tester.reset_ground_truth()
+    command = "make these 3 buttons green"
+    singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 0, "color_name": "green"})
+    singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 1, "color_name": "green"})
+    singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 2, "color_name": "green"})
+    r2 = singe_step_call_tester.test(command, [2, 1, 0])
+    if not r2:
+        print("deictic_tests: failed " + command)
+        return False
+
+    singe_step_call_tester.reset_ground_truth()
+    command = "make these 2 buttons the same color as button 0"
+    singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 0})
+    singe_step_call_tester.add_bad_call("set_button_color")
+    r2 = singe_step_call_tester.test(command, [2, 1])
+    if not r2:
+        print("deictic_tests: failed " + command)
+        return False
+
     return True
 
 def main():
@@ -194,22 +235,93 @@ def main():
     # wait for confirmation, and then call the tool again to set that color to button 0."""
 
     # prompt from Gemini
-    # this works on the color copying test
-    instructions = """You are a helpful assistant for a simple application that allows users 
-    to set button colors. 
-    When given a task, break it down into a series of steps. 
-    If a step requires information that is not immediately available, ask for it explicitly. 
-    For example, if asked to 'copy the color from button 1 to button 0', 
-    first ask for the color of button 1, then proceed to set the color of button 0."""
-    instructions += " There are a total of 3 buttons with indexes starting at 0."
-    instructions += " Sometimes the user may ask a question that has nothing to with controlling an application. If you know the answer just answer it."
+    # this works on the color copying test but not all the time if there are gestures involved
+    # instructions = """You are a helpful assistant for a simple application that allows users
+    # to set button colors.
+    # You are working in a multimodal environment in which the user can make speech commands or make speech commands in
+    # concert with gesture input. The gesture input will be described after the verbal portion
+    # of the command. You should use this information to interpret pronouns and potentially
+    # ambiguously described entities.
+    # When given a task, break it down into a series of steps.
+    # If a step requires information that is not immediately available, ask for it explicitly.
+    # For example, if asked to 'copy the color from button 1 to button 0',
+    # first ask for the color of button 1, then proceed to set the color of button 0.
+    # """
+
+    # prompt from Gemini with modifcations from chat GPT
+    # this works on the color copying test but not all the time if there are gestures involved
+    instructions = """You are a helpful assistant for a simple application that allows users
+    to set button colors.
+
+    You are working in a multimodal environment in which the user can
+    issue speech commands or combine speech with gesture input. The gesture input will be
+    described after the verbal portion of the command. Use this information to interpret
+    pronouns and resolve any ambiguity in descriptions of entities.
+
+    When given a task, break it down into a series of steps, ensuring that you complete each
+    step fully before moving to the next.
+
+    Important: If a step requires querying information from the environment
+    (e.g., 'What is the color of button 1?'), make only one tool call and wait for further
+    input after the tool call returns its result. Do not proceed to the next step until you
+    receive additional instructions or new data from the environment.
+
+    You can't assume that any button is any particular color at any given time as these may change between
+    user commands as the user may change them directly.
+
+    For example, if asked to 'copy the color from button 1 to button 0', first ask for the
+    color of button 1 using a tool call. Wait for the response before making another tool
+    call to set the color of button 0."""
+
+    instructions += 'There are a total of 3 buttons with indexes starting at 0.'
+    instructions += """Sometimes the user may ask a question that has nothing to do with controlling an application.
+                     If you know the answer just answer it."""
+
+# this fails to get past the first test it is just too afraid to take any action
+#     instructions = """You are a helpful assistant for a simple application that allows users
+#         to set button colors.
+#
+#         You are working in a multimodal environment in which the user can
+#         issue speech commands or combine speech with gesture input. The gesture input will be
+#         described after the verbal portion of the command. Use this information to interpret
+#         pronouns and resolve any ambiguity in descriptions of entities.
+#
+#         Some tools you receive will cause the application's state to change, while others will simply retrieve information about the application's state.
+#
+#         You may find yourself in one of the following situations, and you need to take the appropriate action for each:
+#
+#         The user asks a question for which you have all the information needed.
+#         In this case, you should answer the question in plain text without making any tool calls.
+#         Example: "What color are ripe apricots?"
+#
+#         The user asks a question that requires a tool to get the information.
+#         In this case, you should make tool calls to retrieve the needed information.
+#         The results from the tool calls will be sent back to you in a later invocation.
+#         Example: "What color is button one?"
+#         For questions like this, you need to call the function to get the color of the button.
+#
+#         The user issues a command for which you have all the necessary information.
+#         In this case, you should execute the command by calling the appropriate function.
+#         Example: "Make button two purple."
+#
+#         The user issues a command, but you do not have all the necessary information.
+#         In this case, you need to make function calls to gather the missing information.
+#         It is very important not to execute the action yet—just make the calls to retrieve the required information.
+#         Later, once the results from the information calls are returned, you can proceed with the action calls.
+#
+#         """
+
+    instructions += 'There are a total of 3 buttons with indexes starting at 0.'
+    # instructions += """Sometimes the user may ask a question that has nothing to do with controlling an application.
+    #                      If you know the answer just answer it."""
+
     singe_step_call_tester.set_instructions(instructions)
 
     # command = "make button 1 blue"
     # singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 1, "color_name": "blue"})
     # r1 = singe_step_call_tester.test(command)
-    r1 = simple_tests(singe_step_call_tester)
-    print("simple_tests: ", r1)
+    # r1 = simple_tests(singe_step_call_tester)
+    # print("simple_tests: ", r1)
     r1 = deictic_tests(singe_step_call_tester)
     print("deictic_tests: ", r1)
 # run the main function

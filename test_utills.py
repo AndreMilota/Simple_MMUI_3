@@ -85,7 +85,7 @@ class Singe_Step_Call_Tester:
                 gesture_manager.button_clicked(button)
 
             description = gesture_manager.get_description()
-            input  += ". " + description
+            input  += ". Gestures: " + description
 
         prompt += [{"role": "user", "content": input}]
 
