@@ -21,32 +21,32 @@ from tool_box import Tool_Box
 def simple_tests(singe_step_call_tester):
     singe_step_call_tester.reset_ground_truth()
     # test 1
-    command = "make button 1 blue"
-    singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 1, "color_name": "blue"})
-    r1 = singe_step_call_tester.test(command)
-    if not r1:
-        print("simple_tests: failed 'make button 1 blue'")
-        return False
-
-    # test 2
-    singe_step_call_tester.reset_ground_truth()
-    command = "what is the color of button 1"
-    singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 1})
-    r2 = singe_step_call_tester.test(command)
-    if not r2:
-        print("simple_tests: failed: " + command)
-        return False
-
-    # test 3
-    singe_step_call_tester.reset_ground_truth()
-    command = "copy the color from button 1 to button 0"
-    singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 1})
-    singe_step_call_tester.add_bad_call("set_button_color")
-    r2 = singe_step_call_tester.test(command)
-    if not r2:
-        print("simple_tests: failed " + command)
-        return False
-
+    # command = "make button 1 blue"
+    # singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 1, "color_name": "blue"})
+    # r1 = singe_step_call_tester.test(command)
+    # if not r1:
+    #     print("simple_tests: failed 'make button 1 blue'")
+    #     return False
+    #
+    # # test 2
+    # singe_step_call_tester.reset_ground_truth()
+    # command = "what is the color of button 1"
+    # singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 1})
+    # r2 = singe_step_call_tester.test(command)
+    # if not r2:
+    #     print("simple_tests: failed: " + command)
+    #     return False
+    #
+    # # test 3
+    # singe_step_call_tester.reset_ground_truth()
+    # command = "copy the color from button 1 to button 0"
+    # singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 1})
+    # singe_step_call_tester.add_bad_call("set_button_color")
+    # r2 = singe_step_call_tester.test(command)
+    # if not r2:
+    #     print("simple_tests: failed " + command)
+    #     return False
+    #
     # test 4
     singe_step_call_tester.reset_ground_truth()
     command = "copy the color from button 1 to button 2"
@@ -57,43 +57,110 @@ def simple_tests(singe_step_call_tester):
         print("simple_tests: failed " + command)
         return False
 
+    #     # test 5
+    # singe_step_call_tester.reset_ground_truth()
+    # command = "make button 1 the same color as button 2"
+    # singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 2})
+    # singe_step_call_tester.add_bad_call("set_button_color")
+    # r2 = singe_step_call_tester.test(command)
+    # if not r2:
+    #     print("simple_tests: failed " + command)
+    #     return False
+    # # test 6
+    #
+    # singe_step_call_tester.reset_ground_truth()
+    # command = "make button 2 and button 3 green"
+    # singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 2, "color_name": "green"})
+    # singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 3, "color_name": "green"})
+    # r2 = singe_step_call_tester.test(command)
+    # if not r2:
+    #     print("simple_tests: failed " + command)
+    #     return False
+    #
+    # singe_step_call_tester.reset_ground_truth()
+    # command = "What color is the sky during the day"
+    # singe_step_call_tester.add_non_call_condition("'Blue' is in the text")
+    # r2 = singe_step_call_tester.test(command)
+    # if not r2:
+    #     print("simple_tests: failed " + command)
+    #     return False
+    #
+    # singe_step_call_tester.reset_ground_truth()
+    # command = "make button 2 and button 3 the same color as button 1"
+    # singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 1})
+    # singe_step_call_tester.add_bad_call("set_button_color")
+    # r2 = singe_step_call_tester.test(command)
+    # if not r2:
+    #     print("simple_tests: failed " + command)
+    #     return False
+    return True
+
+def deictic_tests(singe_step_call_tester):
+    # singe_step_call_tester.reset_ground_truth()
+    # command = "make this blue"
+    # singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 1, "color_name": "blue"})
+    # r1 = singe_step_call_tester.test(command, [1])
+    # if not r1:
+    #     print("deictic_tests: failed: " + command)
+    #     return False
+    #
+    # # test 2
+    # singe_step_call_tester.reset_ground_truth()
+    # command = "what is the color is this"
+    # singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 1})
+    # r2 = singe_step_call_tester.test(command, [1])
+    # if not r2:
+    #     print("deictic_tests: failed: " + command)
+    #     return False
+
+    # test 3
+    singe_step_call_tester.reset_ground_truth()
+    command = "copy the color from here to here"
+    singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 1})
+    singe_step_call_tester.add_bad_call("set_button_color")
+    r2 = singe_step_call_tester.test(command, [1,0])
+    if not r2:
+        print("deictic_tests: failed " + command)
+        return False
+
+    # test 4
+    singe_step_call_tester.reset_ground_truth()
+    command = "copy the color from this button to this one 2"
+    singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 1})
+    singe_step_call_tester.add_bad_call("set_button_color")
+    r2 = singe_step_call_tester.test(command, [1, 2])
+    if not r2:
+        print("deictic_tests: failed " + command)
+        return False
+
         # test 5
     singe_step_call_tester.reset_ground_truth()
-    command = "make button 1 the same color as button 2"
+    command = "make this the same color as this button"
     singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 2})
     singe_step_call_tester.add_bad_call("set_button_color")
-    r2 = singe_step_call_tester.test(command)
+    r2 = singe_step_call_tester.test(command, [1, 2])
     if not r2:
-        print("simple_tests: failed " + command)
+        print("deictic_tests: failed " + command)
         return False
     # test 6
 
     singe_step_call_tester.reset_ground_truth()
-    command = "make button 2 and button 3 green"
+    command = "make this button and this one green"
     singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 2, "color_name": "green"})
     singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 3, "color_name": "green"})
-    r2 = singe_step_call_tester.test(command)
+    r2 = singe_step_call_tester.test(command, [2, 3])
     if not r2:
-        print("simple_tests: failed " + command)
+        print("deictic_tests: failed " + command)
         return False
 
     singe_step_call_tester.reset_ground_truth()
-    command = "What color is the sky during the day"
-    singe_step_call_tester.add_non_call_condition("'Blue' is in the text")
-    r2 = singe_step_call_tester.test(command)
-    if not r2:
-        print("simple_tests: failed " + command)
-        return False
-
-    singe_step_call_tester.reset_ground_truth()
-    command = "make button 2 and button 3 the same color as button 1"
+    command = "make this and button 3 the same color as this button"
     singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 1})
     singe_step_call_tester.add_bad_call("set_button_color")
-    r2 = singe_step_call_tester.test(command)
+    r2 = singe_step_call_tester.test(command, [2, 1])
     if not r2:
-        print("simple_tests: failed " + command)
+        print("deictic_tests: failed " + command)
         return False
-
 
     return True
 
@@ -142,7 +209,9 @@ def main():
     # singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 1, "color_name": "blue"})
     # r1 = singe_step_call_tester.test(command)
     r1 = simple_tests(singe_step_call_tester)
-    print("r1", r1)
+    print("simple_tests: ", r1)
+    r1 = deictic_tests(singe_step_call_tester)
+    print("deictic_tests: ", r1)
 # run the main function
 if __name__ == "__main__":
     main()

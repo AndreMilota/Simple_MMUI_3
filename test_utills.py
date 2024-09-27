@@ -3,7 +3,7 @@ import json
 import os
 from groq import Groq
 from typing import Callable, Any
-
+from gesture_manager import Gesture_Manager
 
 def pretty_print(obj: Any) -> None:
     print(json.dumps(obj, indent=4))
@@ -73,12 +73,22 @@ class Singe_Step_Call_Tester:
         self.non_call_conditions = []
 
 
-    def test(self, input):
+    def test(self, input, buttons = None):
         prompt = [{
             "role": "assistant",
             "content": self.instructions
         }]
+
+        if buttons:
+            gesture_manager = Gesture_Manager()
+            for button in buttons:
+                gesture_manager.button_clicked(button)
+
+            description = gesture_manager.get_description()
+            input  += ". " + description
+
         prompt += [{"role": "user", "content": input}]
+
         tools = self.tool_box.get_tools(input)
         # now call the LLM
         response = client.chat.completions.create(  # <------ call the LLM
@@ -115,9 +125,11 @@ class Singe_Step_Call_Tester:
                 # see if this is a bad call
                 elif call in self.bad_calls:
                     print("bad call made " + call)
+                    print("input: " + input)
                     return False
                 elif function_name in self.bad_call_functions:
                     print("bad function called " + call)
+                    print("input: " + input)
                     return False
                 else:
                     extra_calls += [call]
@@ -126,6 +138,7 @@ class Singe_Step_Call_Tester:
                 print("response " + response_message.content)
                 if not llm_based_assertion(condition, response_message.content):
                     print("failed non call condition " + condition)
+                    print("input: " + input)
                     return False
 
         # check the length of the good calls
@@ -133,6 +146,7 @@ class Singe_Step_Call_Tester:
         good_calls = len(good_calls)
         if good_calls != needed_calls:
             print("failed to make all needed calls ---------------------")
+            print("input: " + input)
             print("needed_calls = ", needed_calls)
             print("calls made = ", good_calls)
             return False
