@@ -154,6 +154,20 @@ def load_tools(gui) -> Tool_Box:
     out.add_tool_mandatory_args(tool=get_button_color, description=description, parameters=parameters, example=example)
 
     # more tools go here
+    def print_thoughts(thoughts :str) -> Tuple[str, bool]:
+        print("Thouts = ", thoughts)
+        return "printed text", False
+    example = None
+
+    description = "Prints text to the console. The LLM can use this for train of thought reasoning and debugging."
+    parameters = {
+        "thoughts": {
+            "type": "string",
+            "description": "The text to print to the console.",
+        },
+    }
+
+    out.add_tool_mandatory_args(tool=print_thoughts, description=description, parameters=parameters, example=example)
 
     return out
 

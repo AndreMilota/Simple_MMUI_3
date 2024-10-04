@@ -97,7 +97,6 @@ def simple_tests(singe_step_call_tester):
 
 def deictic_tests(singe_step_call_tester):
 
-
     singe_step_call_tester.reset_ground_truth()
     command = "make this blue"
     singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 1, "color_name": "blue"})
@@ -250,32 +249,67 @@ def main():
 
     # prompt from Gemini with modifcations from chat GPT
     # this works on the color copying test but not all the time if there are gestures involved
-    instructions = """You are a helpful assistant for a simple application that allows users
-    to set button colors.
+    # instructions = """You are a helpful assistant for a simple application that allows users
+    # to set button colors.
+    #
+    # You are working in a multimodal environment in which the user can
+    # issue speech commands or combine speech with gesture input. The gesture input will be
+    # described after the verbal portion of the command. Use this information to interpret
+    # pronouns and resolve any ambiguity in descriptions of entities.
+    #
+    # When given a task, break it down into a series of steps, ensuring that you complete each
+    # step fully before moving to the next.
+    #
+    # Important: If a step requires querying information from the environment
+    # (e.g., 'What is the color of button 1?'), make only one tool call and wait for further
+    # input after the tool call returns its result. Do not proceed to the next step until you
+    # receive additional instructions or new data from the environment.
+    #
+    # You can't assume that any button is any particular color at any given time as these may change between
+    # user commands as the user may change them directly.
+    #
+    # For example, if asked to 'copy the color from button 1 to button 0', first ask for the
+    # color of button 1 using a tool call. Wait for the response before making another tool
+    # call to set the color of button 0."""
+    #
+    # instructions += 'There are a total of 3 buttons with indexes starting at 0.'
+    # instructions += """Sometimes the user may ask a question that has nothing to do with controlling an application.
+    #                  If you know the answer just answer it."""
 
-    You are working in a multimodal environment in which the user can
-    issue speech commands or combine speech with gesture input. The gesture input will be
-    described after the verbal portion of the command. Use this information to interpret
-    pronouns and resolve any ambiguity in descriptions of entities.
+    instructions = """You are a helpful assistant for a simple application that allows users to 
+    set button colors.
 
-    When given a task, break it down into a series of steps, ensuring that you complete each
-    step fully before moving to the next.
-
-    Important: If a step requires querying information from the environment
-    (e.g., 'What is the color of button 1?'), make only one tool call and wait for further
-    input after the tool call returns its result. Do not proceed to the next step until you
+    You are working in a multimodal environment where the user can issue speech commands or 
+    combine speech with gesture input. The gesture input will be described after the verbal 
+    portion of the command. Use this information to interpret pronouns and resolve any 
+    ambiguity in the descriptions of entities.
+    
+    When given a task, break it down into a series of steps, ensuring that you complete 
+    each step fully before moving on to the next.
+    
+    Important: If a step requires querying information from the environment 
+    (e.g., "What is the color of button 1?"), make only one tool call and wait for further 
+    input after the tool call returns its result. Do not proceed to the next step until you 
     receive additional instructions or new data from the environment.
-
-    You can't assume that any button is any particular color at any given time as these may change between
-    user commands as the user may change them directly.
-
-    For example, if asked to 'copy the color from button 1 to button 0', first ask for the
-    color of button 1 using a tool call. Wait for the response before making another tool
-    call to set the color of button 0."""
-
+    
+    You cannot assume that any button is a specific color at any given time, as these may 
+    change between user commands or when the user modifies them directly.
+    
+    For example, if asked to "copy the color from button 1 to button 0," first ask for the 
+    color of button 1 using a tool call. Wait for the response before making another tool call to 
+    set the color of button 0.
+    
+    When the user issues a command, make a plan outlining the information you need to 
+    gather, and print those details using the print_thoughts tool. First, create a list of all the 
+    button colors you need to retrieve. Then, make the necessary tool calls to get these button 
+    colors. If you need to gather information before setting button colors, make the tool calls to 
+    get the colors first, and only proceed to set the colors after you have received the results 
+    from these initial tool calls."""
+    #
     instructions += 'There are a total of 3 buttons with indexes starting at 0.'
     instructions += """Sometimes the user may ask a question that has nothing to do with controlling an application.
                      If you know the answer just answer it."""
+
 
 # this fails to get past the first test it is just too afraid to take any action
 #     instructions = """You are a helpful assistant for a simple application that allows users
@@ -320,7 +354,7 @@ def main():
     # command = "make button 1 blue"
     # singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 1, "color_name": "blue"})
     # r1 = singe_step_call_tester.test(command)
-    # r1 = simple_tests(singe_step_call_tester)
+    r1 = simple_tests(singe_step_call_tester)
     # print("simple_tests: ", r1)
     r1 = deictic_tests(singe_step_call_tester)
     print("deictic_tests: ", r1)
