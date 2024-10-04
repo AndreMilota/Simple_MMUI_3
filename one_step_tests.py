@@ -209,7 +209,7 @@ def main():
     # create a tool box
     mock_gui = Mock_GUI()
     tool_box = load_tools(mock_gui)
-    singe_step_call_tester = TU.Singe_Step_Call_Tester(MODEL, tool_box)
+    singe_step_call_tester = TU.Singe_Step_Call_Tester(tool_box, MODEL)
 
     # instructions = """You control a simple application that allows users to set button colors. """
     # # addendum = """If you don't have all the information you need to change anything just make the

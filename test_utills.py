@@ -4,6 +4,7 @@ import os
 from groq import Groq
 from typing import Callable, Any
 from gesture_manager import Gesture_Manager
+from model_manager import get_model_call
 
 def pretty_print(obj: Any) -> None:
     print(json.dumps(obj, indent=4))
@@ -16,14 +17,16 @@ client = Groq(api_key=groq_key, )
 
 characterization_prompt = """You need to return 'True' of the following text matches this description otherwise return false:"""
 
+#llm_call = get_model_call(MODEL)
+
 def llm_based_assertion(characterization :str, text :str)-> bool:
     """Uses Llama 3 to evaluate the nature of the result of a command."""
-
+    local_llm_call = get_model_call('llama3-groq-70b-8192-tool-use-preview')
     messages = [
         {"role": "user", "content": characterization_prompt + characterization},
         {"role": "user", "content": text}
     ]
-    response = client.chat.completions.create(  # <------ call the LLM
+    response = local_llm_call(  # <------ call the LLM
         model=MODEL,
         messages=messages,
         tool_choice="auto",
@@ -37,14 +40,15 @@ def llm_based_assertion(characterization :str, text :str)-> bool:
     return out == "True"
 
 class Singe_Step_Call_Tester:
-    def __init__(self, model, tool_box):
-        self.model = model
+    def __init__(self, tool_box, _model = MODEL):
+        self.model = _model
         self.tool_box = tool_box
         self.needed_calls = set()
         self.bad_calls = set()
         self.bad_call_functions = set()
         self.instructions = None
         self.non_call_conditions = []
+        self.llm_call= get_model_call(_model)
 
     def convert_args_to_strig(self, function_name : str, args :dict):
         return function_name + ", " + str(sorted(args.items()))
