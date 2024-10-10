@@ -63,9 +63,9 @@ class Tool:
         }
 
         if self.service == "groq":
-            out["type"] = "function"
-        elif self.service == "open_ai":
             out["type"] = "tool"
+        elif self.service == "open_ai":
+            out["type"] = "function"
         else:
             raise ValueError("Service must be 'groq' or 'open_ai'")
         return out
