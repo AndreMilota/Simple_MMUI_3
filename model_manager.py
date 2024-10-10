@@ -39,6 +39,11 @@ def get_model_call(model = "llama3-groq-70b-8192-tool-use-preview"):
         client = OpenAI(api_key=key)
         return client.chat.completions.create
 
+    print(f"Model {model} not found")
+    assert False
+    return None
+
+
     # groq_models = set(
     #     ["distil-whisper-large-v3-en", "gemma2-9b-it", "gemma-7b-it", "llama3-groq-70b-8192-tool-use-preview",
     #      "llama3-groq-8b-8192-tool-use-preview", "llama-3.1-70b-versatile", "llama-3.1-8b-instant",

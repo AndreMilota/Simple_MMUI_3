@@ -11,20 +11,21 @@ from typing import List, Any
 
 def flatten_list(list_of_lists: List[List[Any]]) -> List[Any]:
     return [item for sublist in list_of_lists for item in sublist]
+
 def pretty_print(obj: Any) -> None:
     print(json.dumps(obj, indent=4))
 
 class Tool:
-    def __init__(self, tool, name: str, description: str):
+    def __init__(self, tool, name: str, description: str, service="groq"):
         self.function = tool
         self.name = name
         self.description = description
         self.parameters = {}
         self.examples = []
         self.required_parameters = []
+        self.service = service
 
     def add_parameter(self, name: str, description: str, type: str = "string", legal_values: List[str] = None):
-        # assert that it is not a duplicaed definition
         assert name not in self.parameters.keys()
         if legal_values is None:
             self.parameters[name] = {
@@ -50,8 +51,9 @@ class Tool:
             "type": "object",
             "properties": self.parameters,
         }
-        if self.required_parameters != []:
+        if self.required_parameters:
             parameters["required"] = self.required_parameters
+
         out = {
             "function": {
                 "name": self.name,
@@ -60,7 +62,11 @@ class Tool:
             }
         }
 
-        out["type"] = "function"
+        if self.service == "groq":
+            out["type"] = "function"
+        elif self.service == "openai":
+            out["type"] = "tool"
+
         return out
 
     def call(self, **kwargs):
