@@ -10,9 +10,12 @@ import offline_tests_2 as OT
 from agent_core import Agent_Core
 from gesture_manager import Gesture_Manager
 
-def load_tools(gui) -> Tool_Box:
+from model_manager import identify_model
+
+def load_tools(gui, model) -> Tool_Box:
     out = Tool_Box()
 
+    service = identify_model(model)
     index_parameter = {"name": "button_index",
                       "description": "The index of the button to change. Buttons are numbered starting from 0 up to n - 1.",
                       "type": "integer"}
@@ -27,7 +30,9 @@ def load_tools(gui) -> Tool_Box:
         out = f"Set button {button_index} to {color_name}"
         return out, False
 
-    tool = Tool(set_button_color, name = "set_button_color", description = "Set the background color of a button.")
+    tool = Tool(set_button_color, name = "set_button_color",
+                description = "Set the background color of a button.",
+                service = service)
     tool.add_required_parameter(**index_parameter)
     tool.add_required_parameter("color_name", "The name of the color to change the button to.", "string")
     out.add_tool(tool)
@@ -40,7 +45,9 @@ def load_tools(gui) -> Tool_Box:
         out = gui.get_button_color(button_index)
         return out, True
 
-    tool = Tool(get_button_color, name = "get_button_color", description = "Get the background color of a button.")
+    tool = Tool(get_button_color, name = "get_button_color",
+                description = "Get the background color of a button.",
+                service = service)
     tool.add_required_parameter(**index_parameter)
     out.add_tool(tool)
 

@@ -64,9 +64,10 @@ class Tool:
 
         if self.service == "groq":
             out["type"] = "function"
-        elif self.service == "openai":
+        elif self.service == "open_ai":
             out["type"] = "tool"
-
+        else:
+            raise ValueError("Service must be 'groq' or 'open_ai'")
         return out
 
     def call(self, **kwargs):
