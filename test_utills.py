@@ -48,7 +48,7 @@ class Singe_Step_Call_Tester:
         self.bad_call_functions = set()
         self.instructions = None
         self.non_call_conditions = []
-        self.llm_call= get_model_call(_model)
+        self.llm_call = get_model_call(_model)
 
     def convert_args_to_strig(self, function_name : str, args :dict):
         return function_name + ", " + str(sorted(args.items()))
@@ -95,7 +95,9 @@ class Singe_Step_Call_Tester:
 
         tools = self.tool_box.get_tools(input)
         # now call the LLM
-        response = client.chat.completions.create(  # <------ call the LLM
+
+        #response = client.chat.completions.create(  # <------ call the LLM
+        response = self.llm_call(  # <------ call the LLM
             model=self.model,
             messages=prompt,
             tools=tools,

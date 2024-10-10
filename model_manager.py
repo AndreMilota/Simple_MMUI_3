@@ -29,7 +29,7 @@ def get_model_call(model = "llama3-groq-70b-8192-tool-use-preview"):
     if model in open_IA_models:
         key = os.environ.get('OPENAI_KEY')
         client = OpenAI(api_key=key)
-        return client.create
+        return client.chat.completions.create
 
     assert False
     return None

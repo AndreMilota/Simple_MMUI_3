@@ -10,7 +10,8 @@ from tool_box import Tool_Box
 
 # load the key for the Groq API
 groq_key = os.environ.get('GROQ_KEY')
-MODEL = 'llama3-groq-70b-8192-tool-use-preview'
+MODEL = "gpt-4"
+#MODEL = 'llama3-groq-70b-8192-tool-use-preview'
 #MODEL = 'llama-3.1-70b-versatile'
 # get the key and create a client
 client = Groq(api_key=groq_key, )
@@ -118,34 +119,33 @@ that sets the button’s color, given its number and the desired color you want 
 """
 # this makes all the calls in one go and files
 
-prompt = [{
-            "role": "assistant",
-            "content": instructions_7
-        }]
-
-#message = "The user said: make this blue. While making a gesture that indicated Button 1"
-message = ("""The user said: 'make this the color of this.', 
-           While making a gesture that indicated 'Button 2' and then another indicating 'Button 1'""")
-# it is importnat to put the '' around the button names
-# if you capatalize make it will get it wrong
-
-prompt += [{"role": "user", "content": message}]
-
-# tools
-molk_gui = Molk_GUI()
-tool_box = load_tools(molk_gui)
-#tool_box = Tool_Box()
-
-tools = tool_box.get_tools("nothing")
-
-
-response = client.chat.completions.create(  # <------ call the LLM
-                    model=MODEL,
-                    messages=prompt,
-                    tools=tools,
-                    tool_choice="auto",
-                    max_tokens=4096,
-                    temperature = 0.0
-                )
-print("-----------------------------------------------------------------------------------------------------")
-print(response.choices[0].message)
+# prompt = [{
+#             "role": "assistant",
+#             "content": instructions_7
+#         }]
+#
+# #message = "The user said: make this blue. While making a gesture that indicated Button 1"
+# message = ("""The user said: 'make this the color of this.',
+#            While making a gesture that indicated 'Button 2' and then another indicating 'Button 1'""")
+# # it is importnat to put the '' around the button names
+# # if you capatalize make it will get it wrong
+#
+# prompt += [{"role": "user", "content": message}]
+#
+# # tools
+# molk_gui = Molk_GUI()
+# tool_box = load_tools(molk_gui)
+# #tool_box = Tool_Box()
+#
+# tools = tool_box.get_tools("nothing")
+#
+# response = client.chat.completions.create(  # <------ call the LLM
+#                     model=MODEL,
+#                     messages=prompt,
+#                     tools=tools,
+#                     tool_choice="auto",
+#                     max_tokens=4096,
+#                     temperature = 0.0
+#                 )
+# print("-----------------------------------------------------------------------------------------------------")
+# print(response.choices[0].message)

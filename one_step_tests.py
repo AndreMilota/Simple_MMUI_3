@@ -1,7 +1,7 @@
 from simple_LLM_call_tests import MODEL
 from tool_box import Tool_Box
 import test_utills as TU
-from agent_8_15_2024_modular_1 import load_tools
+from agent_10_9_2024 import load_tools
 
 class Mock_GUI():
     def get_button_color(self, button_index):
@@ -69,9 +69,9 @@ def simple_tests(singe_step_call_tester):
     # test 6
 
     singe_step_call_tester.reset_ground_truth()
-    command = "make button 2 and button 3 green"
+    command = "make button 2 and button 0 green"
     singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 2, "color_name": "green"})
-    singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 3, "color_name": "green"})
+    singe_step_call_tester.add_needed_call("set_button_color", {"button_index": 0, "color_name": "green"})
     r2 = singe_step_call_tester.test(command)
     if not r2:
         print("simple_tests: failed " + command)

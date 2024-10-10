@@ -29,7 +29,7 @@ class Tool_Box:
         parameters_list = list(parameters.keys())
 
         t_description = {
-            "type": "function",
+            #"type": "function", # remove for open AI
             "function": {
                 "name": name,
                 "description": description,
