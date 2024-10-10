@@ -86,3 +86,6 @@ of buttons or labeling them. Additionally, what further instructions, if any, wo
 Exploring text manipulation: Another experiment could involve seeing if the system can handle more complex examples where
 the LLM performs text manipulation.
 
+10-9-2024 Andre
+open AI brance
+This branch lets you run the one_step_tests using an Open Ai model it may have broken all the other runtimes though.
