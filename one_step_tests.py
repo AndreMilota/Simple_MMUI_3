@@ -18,8 +18,6 @@ class Mock_GUI():
         print("set_button_color", button_index, color_name)
         pass
 
-from tool_box import Tool_Box
-
 count_mode = True # is this is true then tests should return a count of tests run and passed
 
 def simple_tests(singe_step_call_tester, count_mode=count_mode):

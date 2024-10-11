@@ -76,7 +76,6 @@ class Singe_Step_Call_Tester:
         self.bad_call_functions = set()
         self.non_call_conditions = []
 
-
     def test(self, input, buttons = None):
         prompt = [{
             "role": "assistant",
