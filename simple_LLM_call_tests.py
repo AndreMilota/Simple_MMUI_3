@@ -10,11 +10,11 @@ from tool_box import Tool_Box
 
 # load the key for the Groq API
 groq_key = os.environ.get('GROQ_KEY')
-MODEL = "gpt-4"
-#MODEL = 'llama3-groq-70b-8192-tool-use-preview'
+#MODEL = "gpt-4"
+MODEL = 'llama3-groq-70b-8192-tool-use-preview'
 #MODEL = 'llama-3.1-70b-versatile'
 # get the key and create a client
-client = Groq(api_key=groq_key, )
+#client = Groq(api_key=groq_key, )
 
 from agent_8_15_2024_modular_1 import load_tools
 
