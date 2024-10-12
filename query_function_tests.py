@@ -1,4 +1,4 @@
-#Test prompts which should only result in a function being called to get information
+# Test prompts which should only result in a function being called to get information
 
 from simple_LLM_call_tests import MODEL
 from cross_platform_tool_box import Tool_Box
@@ -323,6 +323,48 @@ def load_tools(gui, model) -> Tool_Box:
 
     return out;
 
+def color_query_test_template(singe_step_call_tester, command :str, button_q_calls :list = []):
+    singe_step_call_tester.reset_ground_truth()
+    for button_q_call in button_q_calls:
+        singe_step_call_tester.add_needed_call("get_button_color", {"button_index": button_q_call})
+    r1 = singe_step_call_tester.test(command)
+    return r1
+
+def color_query_tests(singe_step_call_tester, count_mode=count_mode):
+    commands = [
+    ("make button one blue", []),
+    ("Make button one the color of button two and button two the color of button zero.", [0,2]),
+    ("What are the colors of all the buttons", [0,1,2]),
+    ("What are the colors of buttons two and one", [1,2]),
+    ("Are buttons zero and one the same color", [0,1]),
+    ("What is the most common button color", [0,1,2]),
+    ("Are all the buttons the same color", [0,1,2]),
+    ("Which two buttons are red", [0,1,2]),
+    ("Are any buttons the same color", [0,1,2]),
+    ("Are all buttons uniquely colored", [0,1,2]),
+    ("Make button two the opposite color of what it is now.", [2]),
+    ("If button one is red, make button zero green.", [0]),
+    ("If button zero and button one are both red, make button two yellow.", [0,1]),
+    ("If button two is either red or green, make it yellow.", [2]),
+    ("If button two is either purple or black, make button one orange.", [2]),
+    ("If all the buttons are the same color now, make them all black.", [0,1,2]),
+    ("Which button is different then the others", [0,1,2])]
+
+    if count_mode:
+        tests_passed = 0
+        for command in commands:
+            r = color_query_test_template(singe_step_call_tester, command[0], command[1])
+            if r:
+                tests_passed += 1
+        return len(commands), tests_passed
+    else:
+        for command in commands:
+            r = color_query_test_template(singe_step_call_tester, command[0], command[1])
+            if not r:
+                return False
+        return True
+
+############################################################################################
 
 def main():
     print("running main in simple_LLM_call_tests.py")
@@ -332,8 +374,7 @@ def main():
 
     singe_step_call_tester = TU.Singe_Step_Call_Tester(tool_box, MODEL)
 
-    instructions = """"Here is a cleaned-up version of the prompt with punctuation and speech recognition errors corrected:
-    You are doing the first phase of processing for a multimodal user interface. You will be given the text of what the 
+    instructions = """"You are doing the first phase of processing for a multimodal user interface. You will be given the text of what the 
     user said and a description of the objects they indicated using gestures. First, combine these using the gesture descriptions 
     to resolve pronouns and ambiguous references in the text.
     Then, you will have to handle one of three situations as follows:
@@ -343,27 +384,30 @@ def main():
     to button number one. In this case, don't do anything.
     3.	The user asks a question or gives a command that requires you to get information about the state of the system. For example, 
     the user might say: "Make button one and two the same color as button zero." In this case, you need to call the function to get 
-    the color of button zero."""
+    the color of button zero. """
+
+    instructions += 'If you are asked some general question about all the buttons in aggregate such as what is the most common color or which button is colored differently from the others then you will need to  make a query to find out the color of each of the buttons in turn. '
 
     instructions += 'There are a total of 3 buttons with indexes starting at 0. '
-
-
 
     singe_step_call_tester.set_instructions(instructions)
 
     # get the time
     start_time = time.time()
 
-    r1 = simple_tests(singe_step_call_tester)
-    r2 = deictic_tests(singe_step_call_tester)
-
+    #r1 = simple_tests(singe_step_call_tester)
+   # r2 = deictic_tests(singe_step_call_tester)
+    r3 = color_query_tests(singe_step_call_tester)
     # get the time
     end_time = time.time()
 
-    print("simple_tests: ", r1)
-    print("deictic_tests: ", r2)
-    total = r1[0] + r2[0]
-    passed = r1[1] + r2[1]
+    # print("simple_tests: ", r1)
+    # print("deictic_tests: ", r2)
+    print("color_query_tests: ", r3)
+    # total = r1[0] + r2[0]
+    # passed = r1[1] + r2[1]
+    total = r3[0]
+    passed = r3[1]
     print("results: ", passed, " out of ", total)
     print("time: ", end_time - start_time)
 

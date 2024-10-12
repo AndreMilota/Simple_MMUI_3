@@ -94,6 +94,10 @@ class Tool:
             raise ValueError("platform must be 'groq' or 'open_ai'")
         return out
 
+    # call the function
+    def __call__(self, **kwargs):
+        return self.function(**kwargs)
+
 # This class is used to manage a collection of tools.
 class Tool_Box:
     def __init__(self):
@@ -127,7 +131,7 @@ class Tool_Box:
         except TypeError as e:
             raise ValueError(f"Error in function call: {str(e)}")
 
-    def get(self, platform :str  = "groq") -> list:
+    def get(self, platform :str  = "groq", command :str = None) -> list:
         """ Returns the data structure which is supposed to be used as the tools list and will be given to the llm."""
         out = []
         for tool in self.available_functions.values():
