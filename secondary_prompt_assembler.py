@@ -23,6 +23,8 @@ class Secondary_Prompt_Assembler:
 
         self.end_instructions += f'There are a total of {number_of_buttons} buttons with indexes starting at 0. '
 
+        self.end_instructions += 'When the user says they want to change the color of button 1 they mean the button with index 1, not index 0 or 2. '
+
     def compute_prompt(self, command: str, gesture: Union[Gesture_Manager, str], response :str = None) -> list:
         # see if the gesture_manager is an instance of the Gesture_Manager class
         c_and_g = f"{command}"

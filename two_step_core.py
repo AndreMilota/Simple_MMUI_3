@@ -41,7 +41,6 @@ class Two_Stage_LLM_Processor:
             max_tokens=4096,
             temperature=0.0
         )
-
         return response
 
     def process_response(self, response, index = 0) -> Tuple[str, bool]: # if true you need to use the other in a call to the LLM for a second round

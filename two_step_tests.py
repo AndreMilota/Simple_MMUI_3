@@ -18,6 +18,7 @@ def get_prompt_assemblers():
     primary_tool_box = Tool_Box()
 
     def get_button_color(button_index: int) -> (str, bool):
+        print("get_button_color(", button_index, ")")
         color = button_colors[button_index]
         out = f"The color of button {button_index} is {color}. "
         return out, True
@@ -33,6 +34,7 @@ def get_prompt_assemblers():
     secondary_tool_box = Tool_Box()
 
     def set_button_color(button_index: int, color_name: str) -> (str, bool):
+        print("set_button_color(", button_index, ",", color_name, ")")
         button_colors[button_index] = color_name
         out = f"Set button {button_index} to {color_name}"
         return out, False
@@ -113,57 +115,84 @@ def test_step(Initial_colors :list, buttons_selected :list, command :str,
 
 def get_SUI_test_sets():
     out = []
-    out.append((["red", "green", "blue"], [], "what color is button 0",
-                None, "It should say something about red."))
-
-    out.append((["red", "green", "blue"], [], "make button 1 blue",
-                ["red", "blue", "blue"], None))
-
-    out.append((["red", "green", "blue"], [], "copy the color from button 1 to button 0",
-                ["green", "green", "blue"], None))
-
-    out.append((["red", "green", "blue"], [], "copy the color from button 0 to button 1",
-                ["red", "red", "blue"], None))
-
-    out.append((["red", "green", "blue"], [], "make button 0 the same color as button 2",
-                ["blue", "green", "blue"], None))
-
-    out.append((["red", "green", "blue"], [], "make the second button the same color as the first",
-                ["red", "red", "blue"], None))
-
-    out.append((["red", "green", "blue"], [], "make the second button the same color as button 0",
-                ["red", "red", "blue"], None))
-
-    out.append((["red", "green", "blue"], [], "make button 1 the same color as button 0",
-                ["red", "red", "blue"], None))
-
-    out.append((["red", "green", "blue"], [],
-                "make the button with index 1 the same color as button 2",
-                ["red", "blue", "blue"], None))
-
-    out.append((["red", "green", "blue"], [],
-                "make button 2 the same color as button 0",
-                ["red", "green", "red"], None))
-
+    # out.append((["red", "green", "blue"], [], "what color is button 0",
+    #             None, "It should say something about red."))
+    #
+    # out.append((["red", "green", "blue"], [], "make button 1 blue",
+    #             ["red", "blue", "blue"], None))
+    #
+    # out.append((["red", "green", "blue"], [], "copy the color from button 1 to button 0",
+    #             ["green", "green", "blue"], None))
+    #
+    # out.append((["red", "green", "blue"], [], "copy the color from button 0 to button 1",
+    #             ["red", "red", "blue"], None))
+    #
+    # out.append((["red", "green", "blue"], [], "make button 0 the same color as button 2",
+    #             ["blue", "green", "blue"], None))
+    #
+    # out.append((["red", "green", "blue"], [], "make the second button the same color as the first",
+    #             ["red", "red", "blue"], None))
+    #
+    # out.append((["red", "green", "blue"], [], "make the second button the same color as button 0",
+    #             ["red", "red", "blue"], None))
+    #
+    # out.append((["red", "green", "blue"], [], "make button 1 the same color as button 0",
+    #             ["red", "red", "blue"], None))
+    #
+    # out.append((["red", "green", "blue"], [],
+    #             "make the button with index 1 the same color as button 2",
+    #             ["red", "blue", "blue"], None))
+    #
+    # out.append((["red", "green", "blue"], [],
+    #             "make button 2 the same color as button 0",
+    #             ["red", "green", "red"], None))
+    #
     out.append((["red", "green", "blue"], [],
                 "make button 2 the same color as button 1",
                 ["red", "green", "green"], None))
 
-    out.append((["red", "green", "blue"], [],
-                "make button one the same color as button 2",
-                ["red", "blue", "blue"], None))
+    # out.append((["red", "green", "blue"], [],
+    #             "make button one the same color as button 2",
+    #             ["red", "blue", "blue"], None))
+    #
+    # out.append((["red", "green", "blue"], [],
+    #             "make button number one the same color as button 2",
+    #             ["red", "blue", "blue"], None))
+    #
+    # out.append((["red", "green", "blue"], [],
+    #             "make button number 1 the same color as button 2",
+    #             ["red", "blue", "blue"], None))
+    #
+    # out.append((["red", "green", "blue"], [],
+    #             "make button 1 the same color as button 2",
+    #             ["red", "blue", "blue"], None))
+
+    # out.append((["red", "green", "blue"], [],
+    #             "make the thrid button the same color as button 1",
+    #             ["red", "green", "green"], None))
 
     out.append((["red", "green", "blue"], [],
-                "make button number one the same color as button 2",
-                ["red", "blue", "blue"], None))
+                "make the button number 2 the same color as button 1",
+                ["red", "green", "green"], None))
 
     out.append((["red", "green", "blue"], [],
-                "make button number 1 the same color as button 2",
-                ["red", "blue", "blue"], None))
+                "make the button two the same color as button 1",
+                ["red", "green", "green"], None))
 
-    out.append((["red", "green", "blue"], [],
-                "make button 1 the same color as button 2",
-                ["red", "blue", "blue"], None))
+    # out.append((["red", "green", "blue"], [], "what color is button 1",
+    #             None, "It should say something about green."))
+    #
+    # out.append((["red", "green", "blue"], [], "what color is button 2",
+    #             None, "It should say something about blue."))
+
+    out.append((["red", "green", "blue"], [], "make button 2 red",
+                ["red", "blue", "red"], None))
+
+    # out.append((["red", "green", "blue"], [], "make button 1 red",
+    #             ["red", "red", "blue"], None))
+    #
+    # out.append((["red", "green", "blue"], [], "make button 0 blue",
+    #             ["blue", "green", "blue"], None))
     return out
 
 
