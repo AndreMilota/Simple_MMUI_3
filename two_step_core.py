@@ -28,7 +28,8 @@ class Two_Stage_LLM_Processor:
         self.services = [identify_model(model) for model in self.models]
 
     def step(self, command, gestures="", response=None, index=0):
-        message = self.prompt_assemblers[index].compute_prompt(command, gestures, response)
+        assembler = self.prompt_assemblers[index]
+        message = assembler.compute_prompt(command, gestures, response)
         tool_box = self.prompt_assemblers[index].tool_box
         tools = tool_box.get(platform=self.services[index], command=command)
 
@@ -43,12 +44,14 @@ class Two_Stage_LLM_Processor:
 
         return response
 
-    def process_query_response(self, response, index = 0) -> Tuple[str, bool]: # if true you need to use the other in a call to the LLM for a second round
+    def process_response(self, response, index = 0) -> Tuple[str, bool]: # if true you need to use the other in a call to the LLM for a second round
         text_out = ""
         tool_box = self.prompt_assemblers[index].tool_box
         available_functions = tool_box.available_functions
         response_message = response.choices[0].message
         tool_calls = response_message.tool_calls
+        text_out = ""
+        need_another_turn = False
         if tool_calls:
             for tool_call in tool_calls:
                 function_name = tool_call.function.name
@@ -56,20 +59,22 @@ class Two_Stage_LLM_Processor:
                 function_args = json.loads(tool_call.function.arguments)
 
                 function_response = function_to_call(**function_args)
-                print("function_response = ", function_response)
+                #print("function_response = ", function_response)
 
                 output, flag = function_response
                 if flag:
                     need_another_turn = True
                     text_out += output
-            return text_out, True
+            return text_out, need_another_turn
         else:
             return response_message.content, False
 
     def process_command(self, command, gestures):
         r0 = self.step(command, gestures, index=0)
-        flag, text = self.process_query_response(r0, index=0)
+        text, flag = self.process_response(r0, index=0)
         if flag:
-            r1 = self.step(command, gestures, response=r0, index=1)
-            flag, text = self.process_query_response(r1, index=1)
+            r1 = self.step(command, gestures, response=text, index=1)
+            text, flag = self.process_response(r1, index=1)
         return text
+
+

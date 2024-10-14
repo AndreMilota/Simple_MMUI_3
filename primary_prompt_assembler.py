@@ -39,7 +39,7 @@ class Primary_Prompt_Assembler:
         else:
             gesture_description = gesture
 
-        if gesture_description == "":
+        if gesture_description is None:
             instructions = self.SUI_instructions + self.general_instructions
             prompt = [{
                 "role": "assistant",
