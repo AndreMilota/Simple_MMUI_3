@@ -19,8 +19,8 @@ class Mock_GUI():
         print("get_number_of_buttons")
         return 3
 
-    # def set_button_color(self, button_index, color_name):
-    #     print("set_button_color", button_index, color_name)
+    # def setButtonColor(self, button_index, color_name):
+    #     print("setButtonColor", button_index, color_name)
     #     pass
 
 
@@ -58,7 +58,7 @@ def simple_tests(singe_step_call_tester, count_mode=count_mode):
     singe_step_call_tester.reset_ground_truth()
     command = "copy the color from button 1 to button 0"
     singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 1})
-    singe_step_call_tester.add_bad_call("set_button_color")
+    singe_step_call_tester.add_bad_call("setButtonColor")
     r2 = singe_step_call_tester.test(command)
     if not r2:
         print("simple_tests: failed " + command)
@@ -72,7 +72,7 @@ def simple_tests(singe_step_call_tester, count_mode=count_mode):
     singe_step_call_tester.reset_ground_truth()
     command = "copy the color from button 1 to button 2"
     singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 1})
-    singe_step_call_tester.add_bad_call("set_button_color")
+    singe_step_call_tester.add_bad_call("setButtonColor")
     r2 = singe_step_call_tester.test(command)
     if not r2:
         print("simple_tests: failed " + command)
@@ -86,7 +86,7 @@ def simple_tests(singe_step_call_tester, count_mode=count_mode):
     singe_step_call_tester.reset_ground_truth()
     command = "make button 1 the same color as button 2"
     singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 2})
-    singe_step_call_tester.add_bad_call("set_button_color")
+    singe_step_call_tester.add_bad_call("setButtonColor")
     r2 = singe_step_call_tester.test(command)
     if not r2:
         print("simple_tests: failed " + command)
@@ -99,8 +99,8 @@ def simple_tests(singe_step_call_tester, count_mode=count_mode):
 
     singe_step_call_tester.reset_ground_truth()
     command = "make button 2 and button 0 green"
-    singe_step_call_tester.add_bad_call("set_button_color", {"button_index": 2, "color_name": "green"})
-    singe_step_call_tester.add_bad_call("set_button_color", {"button_index": 0, "color_name": "green"})
+    singe_step_call_tester.add_bad_call("setButtonColor", {"button_index": 2, "color_name": "green"})
+    singe_step_call_tester.add_bad_call("setButtonColor", {"button_index": 0, "color_name": "green"})
     r2 = singe_step_call_tester.test(command)
     if not r2:
         print("simple_tests: failed " + command)
@@ -125,7 +125,7 @@ def simple_tests(singe_step_call_tester, count_mode=count_mode):
     singe_step_call_tester.reset_ground_truth()
     command = "make button 2 and button 3 the same color as button 1"
     singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 1})
-    singe_step_call_tester.add_bad_call("set_button_color")
+    singe_step_call_tester.add_bad_call("setButtonColor")
     r2 = singe_step_call_tester.test(command)
     if not r2:
         print("simple_tests: failed " + command)
@@ -173,7 +173,7 @@ def deictic_tests(singe_step_call_tester, count_mode=count_mode):
     singe_step_call_tester.reset_ground_truth()
     command = "copy the color from button 1 to this button"
     singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 1})
-    singe_step_call_tester.add_bad_call("set_button_color")
+    singe_step_call_tester.add_bad_call("setButtonColor")
     r2 = singe_step_call_tester.test(command, [2])
     if not r2:
         print("deictic_tests: failed " + command)
@@ -187,7 +187,7 @@ def deictic_tests(singe_step_call_tester, count_mode=count_mode):
     singe_step_call_tester.reset_ground_truth()
     command = "copy the color from here to here"
     singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 1})
-    singe_step_call_tester.add_bad_call("set_button_color")
+    singe_step_call_tester.add_bad_call("setButtonColor")
     r2 = singe_step_call_tester.test(command, [1, 0])
     if not r2:
         print("deictic_tests: failed " + command)
@@ -201,7 +201,7 @@ def deictic_tests(singe_step_call_tester, count_mode=count_mode):
     singe_step_call_tester.reset_ground_truth()
     command = "copy the color from this button to this one 2"
     singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 1})
-    singe_step_call_tester.add_bad_call("set_button_color")
+    singe_step_call_tester.add_bad_call("setButtonColor")
     r2 = singe_step_call_tester.test(command, [1, 2])
     if not r2:
         print("deictic_tests: failed " + command)
@@ -215,7 +215,7 @@ def deictic_tests(singe_step_call_tester, count_mode=count_mode):
     singe_step_call_tester.reset_ground_truth()
     command = "make this the same color as this button"
     singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 2})
-    singe_step_call_tester.add_bad_call("set_button_color")
+    singe_step_call_tester.add_bad_call("setButtonColor")
     r2 = singe_step_call_tester.test(command, [1, 2])
     if not r2:
         print("deictic_tests: failed " + command)
@@ -228,8 +228,8 @@ def deictic_tests(singe_step_call_tester, count_mode=count_mode):
 
     singe_step_call_tester.reset_ground_truth()
     command = "make this button and this one green"
-    singe_step_call_tester.add_bad_call("set_button_color", {"button_index": 2, "color_name": "green"})
-    singe_step_call_tester.add_bad_call("set_button_color", {"button_index": 3, "color_name": "green"})
+    singe_step_call_tester.add_bad_call("setButtonColor", {"button_index": 2, "color_name": "green"})
+    singe_step_call_tester.add_bad_call("setButtonColor", {"button_index": 3, "color_name": "green"})
     r2 = singe_step_call_tester.test(command, [2, 3])
     if not r2:
         print("deictic_tests: failed " + command)
@@ -242,7 +242,7 @@ def deictic_tests(singe_step_call_tester, count_mode=count_mode):
     singe_step_call_tester.reset_ground_truth()
     command = "make this and button 3 the same color as this button"
     singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 1})
-    singe_step_call_tester.add_bad_call("set_button_color")
+    singe_step_call_tester.add_bad_call("setButtonColor")
     r2 = singe_step_call_tester.test(command, [2, 1])
     if not r2:
         print("deictic_tests: failed " + command)
@@ -256,7 +256,7 @@ def deictic_tests(singe_step_call_tester, count_mode=count_mode):
     singe_step_call_tester.reset_ground_truth()
     command = "make these 2 buttons the same color as this button"
     singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 0})
-    singe_step_call_tester.add_bad_call("set_button_color")
+    singe_step_call_tester.add_bad_call("setButtonColor")
     r2 = singe_step_call_tester.test(command, [2, 1, 0])
     if not r2:
         print("deictic_tests: failed " + command)
@@ -268,9 +268,9 @@ def deictic_tests(singe_step_call_tester, count_mode=count_mode):
 
     singe_step_call_tester.reset_ground_truth()
     command = "make these 3 buttons green"
-    singe_step_call_tester.add_bad_call("set_button_color", {"button_index": 0, "color_name": "green"})
-    singe_step_call_tester.add_bad_call("set_button_color", {"button_index": 1, "color_name": "green"})
-    singe_step_call_tester.add_bad_call("set_button_color", {"button_index": 2, "color_name": "green"})
+    singe_step_call_tester.add_bad_call("setButtonColor", {"button_index": 0, "color_name": "green"})
+    singe_step_call_tester.add_bad_call("setButtonColor", {"button_index": 1, "color_name": "green"})
+    singe_step_call_tester.add_bad_call("setButtonColor", {"button_index": 2, "color_name": "green"})
     r2 = singe_step_call_tester.test(command, [2, 1, 0])
     if not r2:
         print("deictic_tests: failed " + command)
@@ -283,7 +283,7 @@ def deictic_tests(singe_step_call_tester, count_mode=count_mode):
     singe_step_call_tester.reset_ground_truth()
     command = "make these 2 buttons the same color as button 0"
     singe_step_call_tester.add_needed_call("get_button_color", {"button_index": 0})
-    singe_step_call_tester.add_bad_call("set_button_color")
+    singe_step_call_tester.add_bad_call("setButtonColor")
     r2 = singe_step_call_tester.test(command, [2, 1])
     if not r2:
         print("deictic_tests: failed " + command)

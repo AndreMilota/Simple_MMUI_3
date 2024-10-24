@@ -5,7 +5,7 @@
 # from the initial calls are incorporated into the prompt for the second call.
 
 import pprint
-from prompt_assembler import Prompt_Assembler
+#from prompt_assembler import Prompt_Assembler
 from tool_box import Tool_Box
 import os
 import json
@@ -21,7 +21,7 @@ MODEL = 'llama3-groq-70b-8192-tool-use-preview'
 client = Groq(api_key=groq_key, )
 
 class Two_Stage_LLM_Processor:
-    def __init__(self, prompt_assemblers: list[Prompt_Assembler]) -> Tuple[bool, str]:
+    def __init__(self, prompt_assemblers: list) -> Tuple[bool, str]:
         self.prompt_assemblers = prompt_assemblers
         self.models = [MODEL, MODEL]
         self.model_calls = [get_model_call(model) for model in self.models]

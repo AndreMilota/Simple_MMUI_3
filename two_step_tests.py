@@ -34,8 +34,8 @@ def get_prompt_assemblers(number_of_buttons = 3) -> (Primary_Prompt_Assembler, S
     # setup the secondary prompt assembler
     secondary_tool_box = Tool_Box()
 
-    def set_button_color(button_index: int, color_name: str) -> (str, bool):
-        print("set_button_color(", button_index, ",", color_name, ")")
+    def setButtonColor(button_index: int, color_name: str) -> (str, bool):
+        print("setButtonColor(", button_index, ",", color_name, ")")
         button_colors[button_index] = color_name
         out = f"Set button {button_index} to {color_name}"
         return out, False
@@ -43,8 +43,8 @@ def get_prompt_assemblers(number_of_buttons = 3) -> (Primary_Prompt_Assembler, S
     color_parameter = {"parameter_or_name": "color_name",
                        "description": "The name of the color to change the button to.",
                        "type": "string"}
-    tool = Tool(set_button_color,
-                name = "set_button_color",
+    tool = Tool(setButtonColor,
+                name = "setButtonColor",
                 description = "Set the background color of a button.")
 
     tool.add_required_parameter(**index_parameter)

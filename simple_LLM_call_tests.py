@@ -27,8 +27,8 @@ class Molk_GUI():
         print("get_number_of_buttons")
         return 3
 
-    def set_button_color(self, button_index, color_name):
-        print("set_button_color", button_index, color_name)
+    def setButtonColor(self, button_index, color_name):
+        print("setButtonColor", button_index, color_name)
         pass
 
 # instructions_1 = """You are a multimodal agent who controls a simple application for the user.
