@@ -19,14 +19,14 @@ class Secondary_Prompt_Assembler:
 
         self.end_instructions = """You must either:
         1) answer the users question.
-        2) make the necessary function calls to change the application in the way the user requested. """
+        2) make the necessary function calls to change the application in the way the user requested. \n"""
 
         self.end_instructions += f'There are a total of {number_of_buttons} buttons with indexes starting at 0. '
 
         self.end_instructions += 'When the user says they want to change the color of button 1 they mean the button with index 1, ' \
                                    'not index 0 or 2, When the user says button 0 they mean the button with index 0, not 1. '
 
-        #self.end_instructions += "Some times 'this' and 'that' are used interchangeably. "
+        self.end_instructions += "Some times 'this' and 'that' are used interchangeably. "
 
     def compute_prompt(self, command: str, gesture: Union[Gesture_Manager, str], response :str = None) -> list:
         # see if the gesture_manager is an instance of the Gesture_Manager class
