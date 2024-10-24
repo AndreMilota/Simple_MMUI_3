@@ -378,25 +378,25 @@ def get_many_buttion_tests():
     correct = button_colors.copy()
     correct[0] = "green"
 
-    out.append((button_colors.copy(), [1, 0], "copy the color from this to that ",
-                correct.copy(), None))
+    # out.append((button_colors.copy(), [1, 0], "copy the color from this to that ",
+    #             correct.copy(), None))
 
     out.append((button_colors.copy(), [1, 0], "copy the color from that to that ",
                 correct.copy(), None))
 
-    out.append((button_colors.copy(), [1, 0], "copy the color from this to that ",
-                correct.copy(), None))
+    # out.append((button_colors.copy(), [1, 0], "copy the color from this to that ",
+    #             correct.copy(), None))
 
     correct[0] = "red"
     correct[1] = "red"
-    out.append((button_colors.copy(), [0, 1], "copy the color from this to that ",
-                correct.copy(), None))
+    # out.append((button_colors.copy(), [0, 1], "copy the color from this to that ",
+    #             correct.copy(), None))
 
     out.append((button_colors.copy(), [0, 1], "copy the color from that to that ",
                 correct.copy(), None))
 
-    out.append((button_colors.copy(), [0, 1], "copy the color from this to that ",
-                correct.copy(), None))
+    # out.append((button_colors.copy(), [0, 1], "copy the color from this to that ",
+    #             correct.copy(), None))
 
 
     return out

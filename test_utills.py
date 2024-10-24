@@ -5,7 +5,7 @@ from groq import Groq
 from typing import Callable, Any
 from gesture_manager import Gesture_Manager
 from model_manager import get_model_call, identify_model
-from tool_box import Tool_Box
+
 def pretty_print(obj: Any) -> None:
     print(json.dumps(obj, indent=4))
 
@@ -40,7 +40,7 @@ def llm_based_assertion(characterization :str, text :str)-> bool:
     return out == "True"
 
 class Singe_Step_Call_Tester:
-    def __init__(self, tool_box :Tool_Box, _model = MODEL):
+    def __init__(self, tool_box, _model = MODEL):
         self.model = _model
         self.tool_box = tool_box
         self.needed_calls = set()
