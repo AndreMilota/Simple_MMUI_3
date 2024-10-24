@@ -13,7 +13,7 @@ class Secondary_Prompt_Assembler:
         "of what the user said and a description of the objects they indicated using gestures." \
         "\n First, combine these inputs, using the gesture descriptions to resolve pronouns and ambiguous references in the text. "
 
-        self.SUI_instructions = """"You are a helpful assistant that controls a speech user interface. You will be given the text of what the user said. """
+        self.SUI_instructions = "You are a helpful assistant that controls a speech user interface. You will be given the text of what the user said. "
 
         self.has_information = "We know that: "
 
@@ -23,8 +23,10 @@ class Secondary_Prompt_Assembler:
 
         self.end_instructions += f'There are a total of {number_of_buttons} buttons with indexes starting at 0. '
 
-        self.end_instructions += ('When the user says they want to change the color of button 1 they mean the button with index 1, ' \
-                                   'not index 0 or 2, When the user says button 0 they mean the button with index 0, not 1')
+        self.end_instructions += 'When the user says they want to change the color of button 1 they mean the button with index 1, ' \
+                                   'not index 0 or 2, When the user says button 0 they mean the button with index 0, not 1. '
+
+        #self.end_instructions += "Some times 'this' and 'that' are used interchangeably. "
 
     def compute_prompt(self, command: str, gesture: Union[Gesture_Manager, str], response :str = None) -> list:
         # see if the gesture_manager is an instance of the Gesture_Manager class
