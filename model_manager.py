@@ -25,6 +25,8 @@ def identify_model(model):
     if model in open_IA_models:
         return "open_ai"
 
+    print(f"Model {model} not found")
+
 def get_model_call(model = "llama3-groq-70b-8192-tool-use-preview"):
     """loads the needed api for the model"""
     model_provider = identify_model(model)
