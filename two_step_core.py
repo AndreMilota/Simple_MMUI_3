@@ -45,7 +45,6 @@ class Two_Stage_LLM_Processor:
         return response
 
     def process_response(self, response, index = 0) -> Tuple[str, bool]: # if true you need to use the other in a call to the LLM for a second round
-        text_out = ""
         tool_box = self.prompt_assemblers[index].tool_box
         available_functions = tool_box.available_functions
         response_message = response.choices[0].message
