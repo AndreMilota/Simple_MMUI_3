@@ -17,6 +17,7 @@ from test_utills import pretty_print
 # load the key for the Groq API
 groq_key = os.environ.get('GROQ_KEY')
 MODEL = 'llama3-groq-70b-8192-tool-use-preview'
+#MODEL = 'gpt-4o'
 # get the key and create a client
 client = Groq(api_key=groq_key, )
 
@@ -54,6 +55,9 @@ class Two_Stage_LLM_Processor:
         if tool_calls:
             for tool_call in tool_calls:
                 function_name = tool_call.function.name
+                if function_name not in available_functions:
+                    print (f"Function {function_name} not found in available functions")
+                    return response_message.content, False
                 function_to_call = available_functions[function_name]
                 function_args = json.loads(tool_call.function.arguments)
 

@@ -21,6 +21,9 @@ characterization_prompt = """You need to return 'True' of the following text mat
 
 def llm_based_assertion(characterization :str, text :str)-> bool:
     """Uses Llama 3 to evaluate the nature of the result of a command."""
+    if not text:
+        return False
+
     local_llm_call = get_model_call('llama3-groq-70b-8192-tool-use-preview')
     messages = [
         {"role": "user", "content": characterization_prompt + characterization},

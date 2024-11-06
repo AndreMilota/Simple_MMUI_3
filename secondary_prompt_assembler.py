@@ -26,7 +26,15 @@ class Secondary_Prompt_Assembler:
         self.end_instructions += 'When the user says they want to change the color of button 1 they mean the button with index 1, ' \
                                    'not index 0 or 2, When the user says button 0 they mean the button with index 0, not 1. '
 
-        self.end_instructions += "Some times 'this' and 'that' are used interchangeably. "
+        self.end_instructions += 'There is no function called getButtonColor. '
+        #self.end_instructions += "Some times 'this' and 'that' are used interchangeably. "
+
+        # self.end_instructions += "So if the user indicates button 1 and then button 0 with gestures and says: " \
+        #         "'copy the color from that to that' they mean copy the color from button 1 to button 0 and you should call the function to " \
+        #         "set to color of button 0. Similarly do the same thing if they had said 'copy the color from this to this' " \
+        #         "or 'copy the color from that to this' or 'copy the color from this to that'. "
+
+
 
     def compute_prompt(self, command: str, gesture: Union[Gesture_Manager, str], response :str = None) -> list:
         # see if the gesture_manager is an instance of the Gesture_Manager class

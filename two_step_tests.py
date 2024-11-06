@@ -364,6 +364,50 @@ def get_MMUI_tests():
 
     return out
 
+def smarts_test_sets():
+    out = []
+    out.append((["red", "green", "blue"], [], "is there a green button",
+                None, "It should say yes or something to that effect."))
+
+    out.append((["red", "green", "blue"], [], "is there a yellow button",
+                None, 'It should say: "no" or something to that effect.'))
+
+    out.append((["red", "green", "blue"], [], "How many buttons are red",
+                None, 'It should say: 1 or something to that effect.'))
+
+    out.append((["red", "green", "blue"], [], "How many buttons are red",
+                None, 'It should say: 1 or something to that effect.'))
+
+    out.append((["red", "green", "blue"], [], "tell me how many buttons are green",
+                None, 'It should say: 1 or something to that effect.'))
+
+    out.append((["red", "green", "blue"], [], "make the green button blue",
+                 ["red", "blue", "blue"], None))
+
+    out.append((["red", "green", "blue"], [], "make all the green buttons blue",
+                ["red", "blue", "blue"], None))
+
+    out.append((["red", "green", "blue"], [], "make all buttons blue",
+                ["blue", "blue", "blue"], None))
+
+    out.append((["red", "green", "blue"], [], "make all buttons yellow",
+                ["blue", "blue", "blue"], None))
+
+    out.append((["red", "green", "blue"], [], "Make all the buttons yellow except the green one",
+                ["red", "yellow", "yellow"], None))
+
+    out.append((["red", "green", "blue"], [], "make all the buttons yellow",
+                ["blue", "blue", "blue"], None))
+
+    out.append((["red", "green", "blue"], [], "Make all the buttons yellow except the green one",
+                ["red", "yellow", "yellow"], None))
+
+    out.append((["green", "green", "green", "green", "green", "green", "green", "green", "green", "green", "green"],
+                [0,2], "Make every other button blue",
+                ["green", "blue", "green", "blue", "green", "blue", "green", "blue", "green", "blue", "green"], None))
+
+    return out
+
 def get_many_buttion_tests():
     out = []
     # fill an array with 20 button colors all yellow
@@ -378,32 +422,34 @@ def get_many_buttion_tests():
     correct = button_colors.copy()
     correct[0] = "green"
 
-    # out.append((button_colors.copy(), [1, 0], "copy the color from this to that ",
-    #             correct.copy(), None))
+    out.append((button_colors.copy(), [1, 0], "copy the color from this to that ",
+                correct.copy(), None))
 
     out.append((button_colors.copy(), [1, 0], "copy the color from that to that ",
                 correct.copy(), None))
 
-    # out.append((button_colors.copy(), [1, 0], "copy the color from this to that ",
-    #             correct.copy(), None))
+    out.append((button_colors.copy(), [1, 0], "copy the color from this to that ",
+                correct.copy(), None))
 
     correct[0] = "red"
     correct[1] = "red"
-    # out.append((button_colors.copy(), [0, 1], "copy the color from this to that ",
-    #             correct.copy(), None))
+    out.append((button_colors.copy(), [0, 1], "copy the color from this to that ",
+                correct.copy(), None))
+
 
     out.append((button_colors.copy(), [0, 1], "copy the color from that to that ",
                 correct.copy(), None))
 
-    # out.append((button_colors.copy(), [0, 1], "copy the color from this to that ",
-    #             correct.copy(), None))
+    out.append((button_colors.copy(), [0, 1], "copy the color from that to this ",
+                correct.copy(), None))
 
 
     return out
 
 def two_step_test():
     correct = 0
-    test_set = get_many_buttion_tests()
+    test_set = smarts_test_sets()
+    #test_set = get_many_buttion_tests()
     #test_set = get_SUI_test_sets()
     #test_set = get_MMUI_tests()
     number_of_tests = 0
